@@ -1,0 +1,13 @@
+<div
+  class="camera-container"
+  (mousedown)="startDragging($event)"
+  (mousemove)="onMouseMove($event)"
+  (mouseup)="stopDragging()"
+>
+  <div
+    class="content"
+    [style.transform]="'translate(' + translateX + 'px, ' + translateY + 'px)'"
+  >
+    <ng-content></ng-content>
+  </div>
+</div>
