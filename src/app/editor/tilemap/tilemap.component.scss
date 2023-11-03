@@ -1,0 +1,9 @@
+table {
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 0.3px dashed #747474;
+    text-align: center; /* Alineación horizontal */
+    vertical-align: middle; /* Alineación vertical en el centro */
+}

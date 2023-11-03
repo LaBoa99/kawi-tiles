@@ -1,0 +1,7 @@
+<table>
+  <tr *ngFor="let row of tilemap; let rowIndex = index">
+    <td *ngFor="let col of row; let colIndex = index">
+      <app-tile></app-tile>
+    </td>
+  </tr>
+</table>

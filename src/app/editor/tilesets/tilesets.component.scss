@@ -1,0 +1,29 @@
+.content {
+    height: 100%;
+    overflow: auto;
+  }
+
+.list {
+  max-width: 100%;
+  overflow:scroll;
+  white-space: nowrap;
+}
+
+
+.add {
+  transition: 0.1s ease-in;
+  height: 100%;
+  width: 100%;
+  &:hover {
+    background-color: rgb(255, 60, 0);
+    color: whitesmoke;
+  }
+}
+
+.tile {
+  transition: 0.1s ease-in;
+  cursor: pointer;
+  &:hover {
+    border: 1px red solid;
+  }
+}

@@ -3,10 +3,11 @@
   (mousedown)="startDragging($event)"
   (mousemove)="onMouseMove($event)"
   (mouseup)="stopDragging()"
+  (wheel)="onWheel($event)"
 >
   <div
     class="content"
-    [style.transform]="'translate(' + translateX + 'px, ' + translateY + 'px)'"
+    [style.transform]="'translate(' + translateX + 'px, ' + translateY + 'px) scale(' + scale + ')'"
   >
     <ng-content></ng-content>
   </div>

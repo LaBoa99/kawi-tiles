@@ -1,0 +1,33 @@
+<h6 class="m-0">Tilesets</h6>
+<div class="d-flex flex-row align-items-center justify-content-center">
+    <div
+        class="h-100 w-100 d-flex flex-row flex-nowrap overflow-auto flex-grow-1 ps-2 gap-2"
+        style="background-color: rgba(182, 182, 182, 0.3);"
+    >
+        <ng-container *ngIf="(tilesets$ | async)?.length; else noTilesets">
+            <app-tileset
+                *ngFor="let tileset of tilesets$ | async"
+                [title]="tileset.title"
+                (onClick)="showTiles(tileset)"
+                (onDelete)="removeTiles(tileset)"
+            ></app-tileset>
+        </ng-container>
+        <ng-template #noTilesets> 
+            <small>No se ha cargado ningun <strong>tileset</strong>.</small>
+        </ng-template>
+    </div>
+    <div class="text-center flex-shrink-1 flex-fill">
+        <app-tileset-modal></app-tileset-modal>
+    </div>
+</div>
+<section class="w-100 h-75 overflow-auto" style="max-height: 45vh;">
+    <div class="d-felx flex-row align-items-center justify-content-start">
+        <img
+            *ngFor="let tile of tiles"
+            [src]="tile.image"
+            width="32"
+            height="32"
+            class="tile"
+        />
+    </div>
+</section>

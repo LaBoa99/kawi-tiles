@@ -1,0 +1,17 @@
+span {
+    cursor: pointer;
+    user-select: none;
+    transition: 0.1s ease-in;
+    &:hover {
+        color: tomato;
+    }
+}
+
+button {
+    cursor:  pointer;
+    user-select: none;
+    transition: 0.1s ease-in;
+    &:hover {
+        color: red;
+    }
+}

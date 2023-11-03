@@ -1,34 +1,6 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">Navbar</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <div class="d-flex flex-column">
-                <a class="nav-link active pb-0" aria-current="page" href="#">Kawi.ktile</a>
-                <div class="d-flex flex-row justify-content-start aling-items-start gap-3">
-                    <a class="nav-link active" aria-current="page" href="#">Archivo</a>
-                    <a class="nav-link active" aria-current="page" href="#">Extras</a>
-                    <a class="nav-link active" aria-current="page" href="#">Ayuda</a>
-                </div>
-            </div>
-          </li>
-        </ul>
-      </div>
+<div style="display: flex; flex-direction: column; height: 100vh;">
+    <app-navbar></app-navbar>
+    <div class="container-fluid bg-secundary" style="flex: 1;">
+        <router-outlet></router-outlet>
     </div>
-  </nav>
-
-<div class="container-fluid bg-danger" style="height: calc(100% - 60px)">
-  <div class="row h-100">
-    <div class="col"></div>
-    <div class="col-8">
-      <app-camera>
-        <div>Hola</div>
-      </app-camera>
-    </div>
-    <div class="col"></div>
-  </div>
 </div>
