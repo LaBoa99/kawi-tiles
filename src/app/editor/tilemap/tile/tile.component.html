@@ -1,6 +1,1 @@
-<ng-container *ngIf="tile; else noTile">
-    <img [src]="tile" [width]="width" [height]="height" class="tile">
-</ng-container>
-<ng-template #noTile>
-    <div [style.width.px]="width" [style.height.px]="height"></div>
-</ng-template>
+<app-tile-img [tile]="tile"></app-tile-img>

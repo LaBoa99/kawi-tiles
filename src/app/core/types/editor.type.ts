@@ -1,0 +1,1 @@
+export type Coord = [COL: number, ROW: number]

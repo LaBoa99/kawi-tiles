@@ -1,3 +1,6 @@
 <div class="w-100 h-100  border-gray">
-    Tools over here!
+    <div class="d-flex flex-column gap-1">
+        <app-tile-img [tile]="tile_primary | async"></app-tile-img>
+        <app-tile-img [tile]="tile_secundary | async"></app-tile-img>
+    </div>
 </div>

@@ -70,7 +70,6 @@ export class TilesetViewverComponent implements AfterViewInit, OnDestroy, OnChan
 
   updateLines() {
     try {
-      console.log(this.ct, Object.values(this.ct));
       this.__check_ct(this.ct);
       this.removeLines();
       this.ct.rows = Math.min(Math.floor(this.ct.h / (this.ct.tile_h + this.ct.gap_y)), 100);

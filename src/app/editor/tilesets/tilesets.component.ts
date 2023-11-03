@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { TilesetService } from 'src/app/services/tileset.service';
 import { Tile, Tileset } from '../../core/interfaces/tileset.interface';
+import { PainterService } from 'src/app/services/painter.service';
 
 @Component({
   selector: 'app-tilesets',
@@ -14,7 +15,8 @@ export class TilesetsComponent implements OnInit {
   tiles: Tile[] = []
 
   constructor(
-    private _tilesetService: TilesetService
+    private _tilesetService: TilesetService,
+    private _painterService: PainterService,
   ) {
 
   }
@@ -29,5 +31,9 @@ export class TilesetsComponent implements OnInit {
   removeTiles(tileset: Tileset) {
     if (this._tilesetService.remove(tileset))
       this.tiles = []
+  }
+
+  setTile(tile: Tile, isSecundary: boolean = false){
+    this._painterService.setTile(tile, isSecundary)
   }
 }

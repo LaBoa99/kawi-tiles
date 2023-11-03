@@ -1,6 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Tile, Tileset } from 'src/app/core/interfaces/tileset.interface';
 import { TilesetService } from 'src/app/services/tileset.service';
 
@@ -12,18 +12,18 @@ import { TilesetService } from 'src/app/services/tileset.service';
 export class TilesetModalComponent implements OnInit, OnDestroy {
 
   public form !: FormGroup
+  public defaultValue: Tileset | undefined
 
   constructor(
     private modalService: NgbModal,
     private tilesetService: TilesetService,
     private fb: FormBuilder
-  ) {
-
-  }
+  ) { }
 
   ngOnDestroy(): void {
     this.modalService.dismissAll()
   }
+
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -43,9 +43,10 @@ export class TilesetModalComponent implements OnInit, OnDestroy {
   }
 
   open(content: any) {
+    this.ngOnInit()
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'xl' }).result.then(
-      (_) => this.form.reset(),
-      (_) => this.form.reset(),
+      (_) => this.ngOnInit(),
+      (_) => this.ngOnInit(),
     )
   }
 
@@ -76,12 +77,12 @@ export class TilesetModalComponent implements OnInit, OnDestroy {
     })
   }
 
-  async save() {
+  async save(modal: any) {
     const tiles = await this.getTiles()
     const data = this.form.value
     const tileset: Tileset = { ...data, tiles }
     this.tilesetService.create(tileset)
-    this.modalService.dismissAll()
+    modal.close("form submit")
   }
 
   getTiles(): Promise<Tile[]> {
@@ -118,12 +119,12 @@ export class TilesetModalComponent implements OnInit, OnDestroy {
 
             const imageData = context?.getImageData(0, 0, TILE_W, TILE_W).data;
             const hasNoContent = imageData?.every((channel, index) => channel == 0)
-            console.log(hasNoContent)
             if (hasNoContent) {
               i++
               continue
             }
             const base64 = canvas.toDataURL("image/png");
+            canvas.remove()
             tiles.push({
               image: base64,
               row: i,

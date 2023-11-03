@@ -1,0 +1,20 @@
+export enum TOOLS {
+    // CAMARA
+    CURSOR = 1,
+    HAND,
+    ZOOM,
+
+    // TOOLS DRAWING
+    PENCIL,
+    BUCKET,
+    ERASER,
+    RECT,
+    ELLIPSE,
+
+    // TOOLS SELECTION
+    RECT_SURFACE,
+    CIRCLE_SURFACE,
+    PENCIL_MAGIN,
+    TILEPICKER,
+
+}

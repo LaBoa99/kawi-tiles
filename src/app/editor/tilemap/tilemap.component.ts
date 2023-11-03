@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
+import { Coord } from 'src/app/core/types/editor.type';
+import { TileComponent } from './tile/tile.component';
 
 @Component({
   selector: 'app-tilemap',
@@ -10,6 +12,8 @@ export class TilemapComponent implements OnInit {
   public rows: number = 16
   public cols: number = 16
   public tilemap: number[][] = []
+  
+  private _lastTileDrawed: Coord | undefined
 
   constructor() {
 
@@ -25,6 +29,15 @@ export class TilemapComponent implements OnInit {
       board[i] = new Array(cols).fill(0);
     }
     return board;
+  }
+
+
+
+  @HostListener('document:mousedown', ['$event'])
+  onMouseDown(event: Event){
+    if(event.target){
+      
+    }
   }
 
 

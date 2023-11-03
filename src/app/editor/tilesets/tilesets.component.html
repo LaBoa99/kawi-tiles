@@ -28,6 +28,8 @@
             width="32"
             height="32"
             class="tile"
+            (click)="setTile(tile)"
+            (contextmenu)="setTile(tile, true)"
         />
     </div>
 </section>
