@@ -1,27 +1,30 @@
-# KawiTiles
+<a href="#">
+    <img align="right" height="64" src="https://raw.githubusercontent.com/LaBoa99/kawi-tiles/bd90da16e0a6f72e2675c83dadb852e39ad4bbb9/src/assets/logo.svg">
+</a>
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.8.
+# Kawi's Tiles 🌵
+"Kawi's Tiles" es una aplicación web creada con Angular. Su propósito es crear tilemaps de manera sencilla, que pueden ser exportados en formato PNG o JSON en done en este se pueden guardar los tilesets de manera embebida. 
+El principal propósito de este proyecto es brindar una herramienta de fácil acceso, código libre y disponible para todos, que puede ser  aprovechado en la creación de mapas para con extraordinarias librerías gráficas como Pygame o uso personal.
 
-## Development server
+# Instalación
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Para instalar "Kawi's Tiles", sigue estos pasos:
 
-## Code scaffolding
+```bash
+# Asegúrate de tener Angular CLI instalado en tu sistema. Si no lo tienes, instálalo con:
+npm install -g @angular/cli
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+# Clona el repositorio desde GitHub y accede al directorio:
+git clone https://github.com/LaBoa99/kawi-tiles.git
+cd kawi-tiles
 
-## Build
+# Construye la aplicación con Angular CLI:
+ng build
+```
+¡Listo ahora solo necesitas darle host desde un servidor! 
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+# Links
+[Página de Kawi's Tiles](https://tiles.kawi.page)
 
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+# Licencia
+Este proyecto se distribuye bajo la [Licencia MIT](LICENSE), lo que significa que puedes utilizar, modificar y redistribuir el software de acuerdo con los términos de esa licencia.
