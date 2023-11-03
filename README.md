@@ -18,6 +18,9 @@ npm install -g @angular/cli
 git clone https://github.com/LaBoa99/kawi-tiles.git
 cd kawi-tiles
 
+# Instala todas las dependencias necesarias
+npm install
+
 # Construye la aplicación con Angular CLI:
 ng build
 ```
