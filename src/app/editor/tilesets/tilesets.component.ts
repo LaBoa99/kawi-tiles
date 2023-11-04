@@ -33,7 +33,7 @@ export class TilesetsComponent implements OnInit {
       this.tiles = []
   }
 
-  setTile(tile: Tile, isSecundary: boolean = false){
-    this._painterService.setTile(tile, isSecundary)
+  setTile(tile: Tile, isSecondary: boolean = false) {
+    this._painterService.setTile(tile, isSecondary)
   }
 }

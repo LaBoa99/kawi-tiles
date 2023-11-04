@@ -2,6 +2,7 @@ import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EnsureModuleLoadedOnceGuard } from './module_loaded_once.guard';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -10,7 +11,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     NavbarComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    NgbModule
   ],
   exports: [
     NavbarComponent

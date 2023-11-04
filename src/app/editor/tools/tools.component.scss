@@ -1,0 +1,30 @@
+.tool {
+    border: solid rgb(190, 190, 190) 2px;
+    transition: 0.1s ease-in;
+    width: 45%;
+    height: auto;
+    cursor: pointer;
+    &:hover {
+        background: white;
+    }
+}
+
+.active {
+    color: rgb(231, 57, 27);
+}
+
+.tile-mark {
+    border: solid rgb(190, 190, 190) 2px;
+}
+
+.swap-icon {
+    color: grey;
+    top: 65%;
+    left: 15%;
+    font-size: 12px;
+    transition: 0.1s ease-in;
+    cursor: pointer;
+    &:hover {
+        color: rgb(231, 57, 27);
+    }
+}

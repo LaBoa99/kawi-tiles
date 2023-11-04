@@ -6,7 +6,9 @@
   (wheel)="onWheel($event)"
 >
   <div
-    class="content"
+    class="content w-100 h-100"
+    [ngClass]="{ 'grab': canGrab}"
+    style="background: none;"
     [style.transform]="'translate(' + translateX + 'px, ' + translateY + 'px) scale(' + scale + ')'"
   >
     <ng-content></ng-content>

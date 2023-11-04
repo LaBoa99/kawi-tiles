@@ -10,18 +10,28 @@ export class PainterService {
   public tile_primary = new BehaviorSubject<Tile | undefined>(undefined)
   public tile_primary$ = this.tile_primary.asObservable()
 
-  public tile_secundary = new BehaviorSubject<Tile | undefined>(undefined)
-  public tile_secundary$ = this.tile_secundary.asObservable()
+  public tile_secondary = new BehaviorSubject<Tile | undefined>(undefined)
+  public tile_secondary$ = this.tile_secondary.asObservable()
 
   constructor() { }
 
-  setTile(tile: Tile, isSecundary: boolean = false){
-    const tileEmitter = isSecundary ? this.tile_secundary : this.tile_primary
+  setTile(tile: Tile, isSecondary: boolean = false) {
+    const tileEmitter = isSecondary ? this.tile_secondary : this.tile_primary
     tileEmitter.next(tile)
   }
 
-  getTile(isSecundary: boolean = false){
-    return isSecundary ? this.tile_secundary.value : this.tile_primary.value
+  getTile(isSecondary: boolean = false) {
+    return isSecondary ? this.tile_secondary.value : this.tile_primary.value
+  }
+
+  swapTiles() {
+    const primary = this.tile_primary.getValue()
+    const secondary = this.tile_secondary.getValue()
+
+    if (primary && secondary) {
+      this.setTile(primary, true);
+      this.setTile(secondary, false)
+    }
   }
 
 }

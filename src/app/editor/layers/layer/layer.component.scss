@@ -1,0 +1,17 @@
+.layer {
+    background-color: white;
+    border-bottom: 1.2px rgb(214, 214, 214) solid;
+    height: 36px;
+    border-radius: 0px !important;
+    cursor: pointer;
+    & div i {
+        transition: 0.1 ease-in;
+        &:hover {
+            color: rgb(231, 57, 27);
+        }
+    }
+}
+
+.grab {
+    cursor: grab;
+}

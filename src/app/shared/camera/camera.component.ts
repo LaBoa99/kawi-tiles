@@ -1,4 +1,6 @@
 import { Component, HostListener } from '@angular/core';
+import { TOOLS } from 'src/app/core/enums/tool.enum';
+import { ToolService } from 'src/app/services/tool.service';
 
 @Component({
   selector: 'app-camera',
@@ -14,6 +16,10 @@ export class CameraComponent {
   startX = 0;
   startY = 0;
 
+  constructor(
+    private _toolService: ToolService
+  ) { }
+
   @HostListener('wheel', ['$event'])
   onWheel(event: WheelEvent) {
     const delta = event.deltaY > 0 ? -0.1 : 0.1;
@@ -27,9 +33,11 @@ export class CameraComponent {
   }
 
   startDragging(event: MouseEvent) {
-    this.isDragging = true;
-    this.startX = event.clientX;
-    this.startY = event.clientY;
+    if (this.canGrab) {
+      this.isDragging = true;
+      this.startX = event.clientX;
+      this.startY = event.clientY;
+    }
   }
 
   stopDragging() {
@@ -45,5 +53,9 @@ export class CameraComponent {
       this.translateX += deltaX;
       this.translateY += deltaY;
     }
+  }
+
+  get canGrab() {
+    return this._toolService.getTool() == TOOLS.HAND
   }
 }

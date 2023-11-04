@@ -19,7 +19,7 @@ export class TileComponent {
 
   }
 
-  setTile(isSecundary: boolean = false){
-    this.tile = this._painterService.getTile(isSecundary)
+  setTile(isSecondary: boolean = false) {
+    this.tile = this._painterService.getTile(isSecondary)
   }
 }

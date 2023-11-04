@@ -13,6 +13,9 @@ import { TilesetComponent } from './tilesets/tileset/tileset.component';
 import { TilesetModalComponent } from './tilesets/tileset-modal/tileset-modal.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TilesetViewverComponent } from './tilesets/tileset-viewver/tileset-viewver.component';
+import { LayersComponent } from './layers/layers.component';
+import { LayerComponent } from './layers/layer/layer.component';
+import { ProjectComponent } from './modals/project/project.component';
 
 
 @NgModule({
@@ -24,7 +27,10 @@ import { TilesetViewverComponent } from './tilesets/tileset-viewver/tileset-view
     TilesetsComponent,
     TilesetComponent,
     TilesetModalComponent,
-    TilesetViewverComponent
+    TilesetViewverComponent,
+    LayersComponent,
+    LayerComponent,
+    ProjectComponent
   ],
   imports: [
     CommonModule,

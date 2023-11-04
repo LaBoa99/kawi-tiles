@@ -1,7 +1,12 @@
-<table>
-  <tr *ngFor="let row of tilemap; let rowIndex = index">
+<table *ngIf="tilemap; else noTilemap">
+  <tr *ngFor="let row of tilemap?.board; let rowIndex = index">
     <td *ngFor="let col of row; let colIndex = index">
       <app-tile></app-tile>
     </td>
   </tr>
 </table>
+<ng-template #noTilemap>
+  <div class="d-flex flex-column justify-content-center align-items-center h-100">
+    <small class="text-muted">Deberias crear primero una capa 🌵</small>
+  </div>
+</ng-template>

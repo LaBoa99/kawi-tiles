@@ -1,6 +1,22 @@
 <div class="w-100 h-100  border-gray">
-    <div class="d-flex flex-column gap-1">
-        <app-tile-img [tile]="tile_primary | async"></app-tile-img>
-        <app-tile-img [tile]="tile_secundary | async"></app-tile-img>
+
+    <section class="d-flex gap-1 flex-wrap align-items-center p-2">
+        <div 
+            *ngFor="let tool of tools" 
+            class="btn text-center tool flex-grow-1" 
+            [ngClass]="{'active': toTool(tool.key) == (actual_tool | async)}"
+            (click)="setTool(tool.key)"
+            >
+            <i class="{{ tool.value }}"></i>
+        </div>
+    </section>
+    <div class="w-100">
+        <div class="d-flex flex-fill justify-content-center align-items-center">
+            <div class="position-relative" style="height: 64px; width: 64px;">
+                <i class="bi bi-arrow-left-right position-absolute swap-icon" (click)="swap()"></i>
+                <app-tile-img [tile]="tile_primary | async" class="tile-mark position-absolute" style="top: 10%; left: 5%;"></app-tile-img>
+                <app-tile-img [tile]="tile_secondary | async" class="tile-mark position-absolute" style="bottom: 10%; right: 5%;"></app-tile-img>
+            </div>
+        </div>
     </div>
 </div>

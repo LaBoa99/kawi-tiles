@@ -3,14 +3,15 @@
     height: 100%;
     overflow: hidden;
     position: relative;
+}
+
+.grab {
     cursor: grab;
-  }
-  
-  .content {
+}
+.content {
     position: absolute;
     width: auto;
     height: auto;
     background: whitesmoke;
     transform-origin: 0% 0%; /* Extremo superior izquierdo */
-  }
-  
+}

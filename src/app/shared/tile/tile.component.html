@@ -1,6 +1,8 @@
-<ng-container *ngIf="tile; else noTile">
-    <img [src]="tile.image">
-</ng-container>
-<ng-template #noTile>
-    <div style="width: 32px; height: 32px; background-color: whitesmoke;"></div>
-</ng-template>
+<div>
+    <ng-container *ngIf="tile; else noTile">
+        <img [src]="tile.image">
+    </ng-container>
+    <ng-template #noTile>
+        <div style="width: 32px; height: 32px; background-color: whitesmoke;"></div>
+    </ng-template>
+</div>

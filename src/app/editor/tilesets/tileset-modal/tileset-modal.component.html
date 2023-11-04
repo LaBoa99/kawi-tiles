@@ -1,100 +1,168 @@
 <ng-template #content let-modal>
-	<div class="modal-header">
-		<h4 class="modal-title" id="modal-basic-title">Cargar Tileset</h4>
-		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
-	</div>
-	<div class="modal-body">
-		<form [formGroup]="form">
-			<div class="row">
-				<div class="col">
-					<div class="mb-3">
-						<label class="form-label">Tileset</label>
-						<input class="form-control form-control-sm" type="file" (change)="onTilesetPicked($event)">
-					</div>
-					<div class="mb-3">
-						<label class="form-label">Nombre clave</label>
-						<input class="form-control form-control-sm" type="text" formControlName="title">
-					</div>
-					<section [hidden]="!tileset_image">
-						<div class="row">
-							<div class="col">
-								<div class="mb-3 row">
-									<label class="col-sm-3 col-form-label-sm">Ancho:</label>
-									<div class="col-sm">
-										<input class="form-control form-control-sm" type="number" formControlName="tile_w">
-									</div>
-								</div>
-							</div>
-							<div class="col">
-								<div class="mb-3 row">
-									<label class="col-sm-3 col-form-label-sm">Alto:</label>
-									<div class="col-sm">
-										<input class="form-control form-control-sm" type="number" formControlName="tile_h">
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col">
-								<div class="mb-3 row">
-									<label class="col-sm-3 col-form-label-sm">X:</label>
-									<div class="col-sm">
-										<input class="form-control form-control-sm" type="number" formControlName="x">
-									</div>
-								</div>
-							</div>
-							<div class="col">
-								<div class="mb-3 row">
-									<label class="col-sm-3 col-form-label-sm">Y:</label>
-									<div class="col-sm">
-										<input class="form-control form-control-sm" type="number" formControlName="y">
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col">
-								<div class="mb-3 row">
-									<label class="col-sm-3 col-form-label-sm">Gap X:</label>
-									<div class="col-sm">
-										<input class="form-control form-control-sm" type="number" formControlName="gap_x">
-									</div>
-								</div>
-							</div>
-							<div class="col">
-								<div class="mb-3 row">
-									<label class="col-sm-3 col-form-label-sm">Gap Y:</label>
-									<div class="col-sm">
-										<input class="form-control form-control-sm" type="number" formControlName="gap_y">
-									</div>
-								</div>
-							</div>
-						</div>
-					</section>
-				</div>
-				<div class="col">
-					<div class="overflow-auto h-100" style="max-height: 50vh;">
-						<app-tileset-viewver *ngIf="tileset_image; else noTileset" [tileset_image]="tileset_image" [config_tileset]="tileset_config"></app-tileset-viewver>
-					</div>					  
-					<ng-template #noTileset>
-						<div class="d-flex flex-column justify-content-center align-items-center h-100 w-100">
-						  <h1 class="fs-1">
-							<i class="bi bi-image-alt text-secondary"></i>
-						  </h1>
-						  <small class="text-muted">No se ha seleccionado ningún tileset (JPEG, PNG, GIF, etc).</small>
-						</div>
-					</ng-template>
-				</div>
-			</div>
-		</form>
-	</div>
-	<div class="modal-footer">
-		<button type="button" class="btn btn-outline-dark" (click)="save(modal)" [disabled]="!form.valid">Guardar</button>
-	</div>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Cargar Tileset</h4>
+        <button
+            type="button"
+            class="btn-close"
+            aria-label="Close"
+            (click)="modal.dismiss('Cross click')"
+        ></button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="form">
+            <div class="row">
+                <div class="col">
+                    <div class="mb-3">
+                        <label class="form-label">Tileset</label>
+                        <input
+                            class="form-control form-control-sm"
+                            type="file"
+                            (change)="onTilesetPicked($event)"
+                        />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Nombre clave</label>
+                        <input
+                            class="form-control form-control-sm"
+                            type="text"
+                            formControlName="title"
+                        />
+                    </div>
+                    <section [hidden]="!tileset_image">
+                        <div class="row">
+                            <div class="col">
+                                <div class="mb-3 row">
+                                    <label class="col-sm-3 col-form-label-sm"
+                                        >Ancho:</label
+                                    >
+                                    <div class="col-sm">
+                                        <input
+                                            class="form-control form-control-sm"
+                                            type="number"
+                                            formControlName="tile_w"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="mb-3 row">
+                                    <label class="col-sm-3 col-form-label-sm"
+                                        >Alto:</label
+                                    >
+                                    <div class="col-sm">
+                                        <input
+                                            class="form-control form-control-sm"
+                                            type="number"
+                                            formControlName="tile_h"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="mb-3 row">
+                                    <label class="col-sm-3 col-form-label-sm"
+                                        >X:</label
+                                    >
+                                    <div class="col-sm">
+                                        <input
+                                            class="form-control form-control-sm"
+                                            type="number"
+                                            formControlName="x"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="mb-3 row">
+                                    <label class="col-sm-3 col-form-label-sm"
+                                        >Y:</label
+                                    >
+                                    <div class="col-sm">
+                                        <input
+                                            class="form-control form-control-sm"
+                                            type="number"
+                                            formControlName="y"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="mb-3 row">
+                                    <label class="col-sm-3 col-form-label-sm"
+                                        >Gap X:</label
+                                    >
+                                    <div class="col-sm">
+                                        <input
+                                            class="form-control form-control-sm"
+                                            type="number"
+                                            formControlName="gap_x"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="mb-3 row">
+                                    <label class="col-sm-3 col-form-label-sm"
+                                        >Gap Y:</label
+                                    >
+                                    <div class="col-sm">
+                                        <input
+                                            class="form-control form-control-sm"
+                                            type="number"
+                                            formControlName="gap_y"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <div class="col">
+                    <div class="overflow-auto h-100" style="max-height: 50vh;">
+                        <app-tileset-viewver
+                            *ngIf="tileset_image; else noTileset"
+                            [tileset_image]="tileset_image"
+                            [config_tileset]="tileset_config"
+                        ></app-tileset-viewver>
+                    </div>
+                    <ng-template #noTileset>
+                        <div
+                            class="d-flex flex-column justify-content-center align-items-center h-100 w-100"
+                        >
+                            <h1 class="fs-1">
+                                <i class="bi bi-image-alt text-secondary"></i>
+                            </h1>
+                            <small class="text-muted"
+                                >No se ha seleccionado ningún tileset (JPEG,
+                                PNG, GIF, etc).</small
+                            >
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button
+            type="button"
+            class="btn btn-outline-dark"
+            (click)="save(modal)"
+            [disabled]="!form.valid"
+        >
+            Guardar
+        </button>
+    </div>
 </ng-template>
 
-<button class="btn btn-sm h-100 border-0 add text-center p-0" (click)="open(content)">
-	<h4 class="mt-2">
-		<i class="bi bi-file-plus"></i>
-	</h4>
+<button
+    class="btn btn-sm h-100 border-0 add text-center p-0"
+    (click)="open(content)"
+>
+    <h4 class="mt-2">
+        <i class="bi bi-file-plus"></i>
+    </h4>
 </button>

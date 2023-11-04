@@ -21,10 +21,15 @@
                         <a class="nav-link pb-0" aria-current="page" href="#">
                             <h5 class="m-0">Kawi.ktile</h5>
                         </a>
-                        <div class="d-flex flex-row justify-content-start align-items-start gap-3">
-                            <a class="nav-link active" aria-current="page" href="#">Archivo</a>
-                            <a class="nav-link active" aria-current="page" href="#">Extras</a>
-                            <a class="nav-link active" aria-current="page" href="#">Ayuda</a>
+                        <div class="d-flex flex-row justify-content-start align-items-center gap-3">
+                            <div ngbDropdown>
+                                <a class="nav-link active" style="cursor: pointer;"  ngbDropdownToggle>Archivo</a>
+                                <div ngbDropdownMenu>
+                                    <button ngbDropdownItem (click)="openProjectModal()">Crear nuevo Tilemap</button>
+                                </div>
+                            </div>
+                            <a class="nav-link active" aria-current="page">Extras</a>
+                            <a class="nav-link active" aria-current="page">Ayuda</a>
                         </div>
                     </div>
                 </li>
