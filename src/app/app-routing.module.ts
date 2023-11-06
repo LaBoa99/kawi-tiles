@@ -7,7 +7,7 @@ const routes: Routes = [
     loadChildren: () => import("./editor/editor.module").then(m => m.EditorModule)
   },
   {
-    path: "",
+    path: "**",
     pathMatch: "full",
     redirectTo: "editor",
   },

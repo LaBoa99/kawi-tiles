@@ -23,8 +23,8 @@ export class ProjectComponent implements OnInit {
       title: ["", [Validators.required]],
       tile_h: [0, [Validators.min(0), Validators.required]],
       tile_w: [0, [Validators.min(0), Validators.required]],
-      cols: [1, [Validators.required, Validators.min(1)]],
-      rows: [1, [Validators.required, Validators.min(1)]],
+      cols: [1, [Validators.min(1), Validators.required]],
+      rows: [1, [Validators.min(1), Validators.required]],
     })
   }
 
@@ -33,7 +33,8 @@ export class ProjectComponent implements OnInit {
   }
 
   submit() {
-
+    this._tileProjectService.createTileProject(this.form.value)
+    this.closeModal()
   }
 
   get width() {

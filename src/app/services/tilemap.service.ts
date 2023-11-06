@@ -2,33 +2,54 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Tilemap } from '../core/interfaces/tilemap.interface';
 import { Tile } from '../core/interfaces/tileset.interface';
-import { TileProjectService } from './tile-project.service';
+import { BehaviorListController } from '../core/utils/service_behavior';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TilemapService {
-  private tilemaps: Tilemap[] = [];
-  private _tilemapSubject = new BehaviorSubject<Tilemap | null>(null);
-  public tilemap$: Observable<Tilemap | null> = this._tilemapSubject.asObservable();
+
+  private tilemapsController !: BehaviorListController<Tilemap>
+  public tilemaps$ !: Observable<Tilemap[]>
+
+  private _tilemapSubject = new BehaviorSubject<Tilemap | null | undefined>(null);
+  public tilemap$: Observable<Tilemap | null | undefined> = this._tilemapSubject.asObservable();
 
   constructor(
-    private tileprojectService: TileProjectService
-  ) { }
+  ) {
+    this.tilemapsController = new BehaviorListController<Tilemap>([])
+    this.tilemaps$ = this.tilemapsController.subject$
+  }
+
+  // Stack Operations
+  pushTilemap(tilemap: Tilemap) {
+    this.tilemapsController.push(tilemap);
+  }
+
+  removeAtTilemap(i: number) {
+    return this.tilemapsController.removeAt(i);
+  }
+
+  setTilemap(i: number, tilemap: Tilemap) {
+    return this.tilemapsController.set(i, tilemap);
+  }
+
+  getTilemap(i: number): Tilemap | undefined {
+    return this.tilemapsController.get(i);
+  }
 
   // Crea un nuevo Tilemap
-  createTilemap() {
-    const [rows, cols] = this.tileprojectService.getGrid()
+  createTilemap(rows: number, cols: number) {
     const newTilemap: Tilemap = { board: this.__gen_board(rows, cols) }
-    this.tilemaps.push(newTilemap);
+    this.pushTilemap(newTilemap)
     this._tilemapSubject.next(newTilemap);
-    this.selectTilemap(this.tilemaps.length - 1)
+    this.selectTilemap(this.tilemapsController.all().length - 1)
   }
 
   // Selecciona un Tilemap existente por índice
   selectTilemap(index: number) {
-    if (index >= 0 && index < this.tilemaps.length) {
-      this._tilemapSubject.next(this.tilemaps[index]);
+    if (index >= 0 && index < this.tilemapsController.all().length) {
+      this._tilemapSubject.next(this.getTilemap(index));
     } else {
       this._tilemapSubject.next(null);
     }
@@ -42,7 +63,7 @@ export class TilemapService {
     }
   }
 
-  __gen_board(rows: number, cols: number): any[][] {
+  private __gen_board(rows: number, cols: number): any[][] {
     const board = new Array(rows);
     for (let i = 0; i < rows; i++) {
       board[i] = new Array(cols).fill(null);
@@ -50,7 +71,7 @@ export class TilemapService {
     return board;
   }
 
-  get currentTilemap(): Tilemap | null {
+  get currentTilemap(): Tilemap | null | undefined {
     return this._tilemapSubject.value;
   }
 }

@@ -1,11 +1,9 @@
-import { Component, ElementRef, Host, HostListener, OnInit } from '@angular/core';
-import { Coord } from 'src/app/core/types/editor.type';
-import { TileComponent } from './tile/tile.component';
-import { Tile } from 'src/app/core/interfaces/tileset.interface';
+import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
 import { Tilemap } from 'src/app/core/interfaces/tilemap.interface';
-import { TilemapService } from 'src/app/services/tilemap.service';
+import { Coord } from 'src/app/core/types/editor.type';
 import { PainterService } from 'src/app/services/painter.service';
 import { TileProjectService } from 'src/app/services/tile-project.service';
+import { TilemapService } from 'src/app/services/tilemap.service';
 
 @Component({
   selector: 'app-tilemap',
@@ -16,7 +14,7 @@ export class TilemapComponent implements OnInit {
 
   public rows: number = 16
   public cols: number = 16
-  public tilemap: Tilemap | null = null;
+  public tilemap: Tilemap | null | undefined = null;
   public isLeftMouseDown: boolean = false
 
   private _lastTileDrawed: Coord | undefined
