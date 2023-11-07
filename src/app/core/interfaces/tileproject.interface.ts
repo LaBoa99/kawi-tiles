@@ -14,8 +14,8 @@ export interface TileProject {
 export const DEFAULT_TILEPROJECT: TileProject = {
     tile_h: 32,
     tile_w: 32,
-    rows: 16,
-    cols: 16,
+    rows: 0,
+    cols: 0,
     layers: [],
     tilesets: [],
     title: ""

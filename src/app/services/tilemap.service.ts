@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Tilemap } from '../core/interfaces/tilemap.interface';
+import { TCoordinate, Tilemap } from '../core/interfaces/tilemap.interface';
 import { Tile } from '../core/interfaces/tileset.interface';
 import { BehaviorListController } from '../core/utils/service_behavior';
 
@@ -22,8 +22,8 @@ export class TilemapService {
   }
 
   // Stack Operations
-  pushTilemap(tilemap: Tilemap) {
-    this.tilemapsController.push(tilemap);
+  unshiftTilemap(tilemap: Tilemap) {
+    this.tilemapsController.unshift(tilemap);
   }
 
   removeAtTilemap(i: number) {
@@ -40,8 +40,8 @@ export class TilemapService {
 
   // Crea un nuevo Tilemap
   createTilemap(rows: number, cols: number) {
-    const newTilemap: Tilemap = { board: this.__gen_board(rows, cols) }
-    this.pushTilemap(newTilemap)
+    const newTilemap: Tilemap = { board: this.__gen_board(rows, cols), name: this.genLayerName() }
+    this.unshiftTilemap(newTilemap)
     this._tilemapSubject.next(newTilemap);
     this.selectTilemap(this.tilemapsController.all().length - 1)
   }
@@ -61,6 +61,20 @@ export class TilemapService {
       currentTilemap.board[row][col] = tile;
       this._tilemapSubject.next(currentTilemap);
     }
+  }
+
+  setTiles(coordinates: TCoordinate[]) {
+    const currentTilemap = this.currentTilemap
+    if (!currentTilemap) return;
+    for (const coord of coordinates) {
+      const { row, col, tile } = coord
+      currentTilemap.board[row][col] = tile
+    }
+    this._tilemapSubject.next(currentTilemap);
+  }
+
+  genLayerName(): string {
+    return `Capa #${this.tilemapsController.all().length + 1}`
   }
 
   private __gen_board(rows: number, cols: number): any[][] {

@@ -25,6 +25,12 @@ export class BehaviorListController<T> {
         this._list$.next(values);
     }
 
+    unshift(value: T): void {
+        const values = this.values;
+        values.unshift(value);
+        this._list$.next(values);
+    }
+
     // Reemplaza un elemento en el arreglo en la posición 'index' con el nuevo valor 'value'.
     set(index: number, value: T): T | undefined {
         const values = this.values;

@@ -13,24 +13,41 @@ export class TileProjectService implements OnDestroy {
 
   // Subscriptions
   private tilemaps$ !: Subscription
+  private tilemap$ !: Subscription
 
   constructor(
     private _tilemapService: TilemapService
   ) {
     this.tilemaps$ = this._tilemapService.tilemaps$.subscribe(tilemaps => {
-      this.tileproject.layers = tilemaps
+      const tileproject = this.tileproject
+      tileproject.layers = tilemaps
+      if (tileproject) {
+        this._tileproject.next(tileproject)
+      }
+    })
+
+    this.tilemap$ = this._tilemapService.tilemaps$.subscribe(tilemap => {
+      const tileproject = this.tileproject
+      if (tileproject) {
+        this._tileproject.next(tileproject)
+      }
     })
   }
 
   ngOnDestroy(): void {
-    if (this.tilemaps$) {
-      this.tilemaps$.unsubscribe()
-    }
+    if (this.tilemaps$) this.tilemaps$.unsubscribe()
+    if (this.tilemap$) this.tilemap$.unsubscribe()
   }
 
   createTileProject(data: TileProject) {
     this._tilemapService.createTilemap(data.rows, data.cols)
     this._tileproject.next(data)
+  }
+
+  appendLayer() {
+    if (this.tileproject.rows > 0 && this.tileproject.cols > 0) {
+      this._tilemapService.createTilemap(this.tileproject.rows, this.tileproject.cols)
+    }
   }
 
   getTileProject() {

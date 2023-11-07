@@ -1,4 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Tilemap } from 'src/app/core/interfaces/tilemap.interface';
+import { Tile } from 'src/app/core/interfaces/tileset.interface';
+import { TilemapService } from 'src/app/services/tilemap.service';
 
 @Component({
   selector: 'app-layer',
@@ -7,10 +11,25 @@ import { Component } from '@angular/core';
 })
 export class LayerComponent {
 
+  @Input() layer !: Tilemap
+  @Output() click = new EventEmitter<Tilemap>()
 
   public isVisible: boolean = true
+  public selectedTilemap$ !: Observable<Tilemap | null | undefined>
+
+  constructor(
+    private _tilemapService: TilemapService
+  ) {
+    this.selectedTilemap$ = _tilemapService.tilemap$
+  }
 
   toggleVisibility() {
     this.isVisible = !this.isVisible
   }
+
+  onClick() {
+    this.click.emit(this.layer)
+  }
+
+
 }

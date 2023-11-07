@@ -1,18 +1,28 @@
 <div class="d-flex align-items-center justify-content-between">
     <h6>Capas</h6>
-    <h4 class="mt-2">
+    <h4 class="mt-2" (click)="createLayer()">
         <i class="bi bi-file-plus" style="cursor: pointer;"></i>
-    </h4>    
+    </h4>
 </div>
 
 <section class="w-100 h-75 overflow-auto">
-    <div class="d-flex flex-column" *ngIf="(layers$ | async)?.length; else noLayers">
-        <app-layer *ngFor="let layer of layers$ | async" class="flex-fill"></app-layer>
+    <div
+        class="d-flex flex-column"
+        *ngIf="(layers$ | async)?.length; else noLayers"
+    >
+        <app-layer
+            *ngFor="let layer of layers$ | async; index as i"
+            class="flex-fill"
+            [layer]="layer"
+            (click)="onClickLayer(i)"
+        ></app-layer>
     </div>
     <ng-template #noLayers>
-        <div class="h-100 w-100" style="background: #D6D8DA">
-            <div class="h-100 d-flex flex-column align-items-center justify-content-center">
-                <h1 class="text-secondary" (click)="createLayer()">
+        <div class="h-100 w-100" style="background: #d6d8da;">
+            <div
+                class="h-100 d-flex flex-column align-items-center justify-content-center"
+            >
+                <h1 class="text-secondary">
                     <i class="bi bi-layers"></i>
                 </h1>
                 <small class="text-muted">Agrega una capa</small>

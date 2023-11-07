@@ -1,5 +1,6 @@
-import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
-import { Tilemap } from 'src/app/core/interfaces/tilemap.interface';
+import { Component, ElementRef, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Subject, Subscription, debounceTime, takeUntil, toArray } from 'rxjs';
+import { TCoordinate, Tilemap } from 'src/app/core/interfaces/tilemap.interface';
 import { Coord } from 'src/app/core/types/editor.type';
 import { PainterService } from 'src/app/services/painter.service';
 import { TileProjectService } from 'src/app/services/tile-project.service';
@@ -10,7 +11,7 @@ import { TilemapService } from 'src/app/services/tilemap.service';
   templateUrl: './tilemap.component.html',
   styleUrls: ['./tilemap.component.scss']
 })
-export class TilemapComponent implements OnInit {
+export class TilemapComponent implements OnInit, OnDestroy {
 
   public rows: number = 16
   public cols: number = 16
@@ -18,6 +19,12 @@ export class TilemapComponent implements OnInit {
   public isLeftMouseDown: boolean = false
 
   private _lastTileDrawed: Coord | undefined
+  private _mouseMoveSubject = new Subject<TCoordinate>()
+  private _mouseStopSubject = new Subject<boolean>()
+
+  // Subscriptions
+  private _mouseMoveSubscription !: Subscription
+  private _mouseStopSubscription !: Subscription
 
 
   constructor(
@@ -29,8 +36,23 @@ export class TilemapComponent implements OnInit {
 
   }
 
+  ngOnDestroy(): void {
+    if (this._mouseMoveSubscription) this._mouseMoveSubscription.unsubscribe()
+  }
+
   ngOnInit(): void {
     this._tilemapService.tilemap$.subscribe(res => this.tilemap = res)
+    this._mouseStopSubscription = this._mouseStopSubject.asObservable().pipe(
+      debounceTime(1000)
+    ).subscribe(_ => console.log())
+
+    this._mouseMoveSubscription = this._mouseMoveSubject.asObservable().pipe(
+      takeUntil(this._mouseStopSubject),
+      toArray()
+    ).subscribe(coords => {
+      console.log("Emitiendo", coords)
+      //this._tilemapService.setTiles(coords)
+    })
   }
 
 
@@ -41,8 +63,11 @@ export class TilemapComponent implements OnInit {
       const coords = this.getCell(x, y)
       if (coords.join() == this._lastTileDrawed?.join()) return;
       const [row, col] = coords
-      this.tilemap.board[row][col] = this._painterService.getTile(false) || null
+      console.log(row, col)
+      const tile = this._painterService.getTile(false) || null
+      this.tilemap.board[row][col] = tile
       this._lastTileDrawed = coords
+      this._mouseMoveSubject.next({ row, col, tile })
     }
   }
 
@@ -55,9 +80,10 @@ export class TilemapComponent implements OnInit {
 
   @HostListener('mouseup', ['$event'])
   onMouseUp(event: MouseEvent) {
-    if (event.button == 0) [
+    if (event.button == 0) {
       this.isLeftMouseDown = false
-    ]
+      this._mouseStopSubject.next(true)
+    }
   }
 
   calibrateCoords(x: number, y: number) {

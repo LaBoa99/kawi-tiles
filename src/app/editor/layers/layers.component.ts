@@ -25,6 +25,10 @@ export class LayersComponent implements OnInit {
   }
 
   createLayer() {
+    this._tileprojectService.appendLayer()
+  }
 
+  onClickLayer(index: number) {
+    this._tilemapService.selectTilemap(index)
   }
 }
