@@ -19,16 +19,37 @@
                 <li class="nav-item">
                     <div class="d-flex flex-column">
                         <a class="nav-link pb-0" aria-current="page" href="#">
-                            <h5 class="m-0">Kawi.ktile</h5>
+                            <h5 class="m-0">{{ title || "¡Crea un proyecto!" }}<small class="text-muted ms-1" style="font-size: 14px;">(beta)</small></h5>
                         </a>
                         <div class="d-flex flex-row justify-content-start align-items-center gap-3">
                             <div ngbDropdown>
                                 <a class="nav-link active" style="cursor: pointer;"  ngbDropdownToggle>Archivo</a>
                                 <div ngbDropdownMenu>
-                                    <button ngbDropdownItem (click)="openProjectModal()">Crear nuevo Tilemap</button>
+                                    <button ngbDropdownItem (click)="openProjectModal()">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <small>Crear proyecto</small>
+                                            <small>(Alt + N)</small>
+                                        </div>
+                                    </button>
                                 </div>
                             </div>
-                            <a class="nav-link active" aria-current="page">Extras</a>
+                            <div ngbDropdown>
+                                <a class="nav-link active" style="cursor: pointer;"  ngbDropdownToggle>Proyecto</a>
+                                <div ngbDropdownMenu>
+                                    <button ngbDropdownItem (click)="addRow()">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <small><i class="bi bi-plus-lg"></i> Fila</small>
+                                            <small>(Alt + R)</small>
+                                        </div>
+                                    </button>
+                                    <button ngbDropdownItem (click)="addCol()">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <small><i class="bi bi-plus-lg"></i> Columna</small>
+                                            <small>(Alt + C)</small>
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
                             <a class="nav-link active" aria-current="page">Ayuda</a>
                         </div>
                     </div>

@@ -77,6 +77,11 @@ export class TilemapService {
     return `Capa #${this.tilemapsController.all().length + 1}`
   }
 
+  reset() {
+    this.tilemapsController.clean()
+    this._tilemapSubject.next(undefined)
+  }
+
   private __gen_board(rows: number, cols: number): any[][] {
     const board = new Array(rows);
     for (let i = 0; i < rows; i++) {

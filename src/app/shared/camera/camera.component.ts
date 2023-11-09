@@ -1,5 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import { TOOLS } from 'src/app/core/enums/tool.enum';
+import { CameraService } from 'src/app/services/camera.service';
 import { ToolService } from 'src/app/services/tool.service';
 
 @Component({
@@ -17,7 +18,8 @@ export class CameraComponent {
   startY = 0;
 
   constructor(
-    private _toolService: ToolService
+    private _toolService: ToolService,
+    private _cameraService: CameraService
   ) { }
 
   @HostListener('wheel', ['$event'])
@@ -30,6 +32,7 @@ export class CameraComponent {
   changeScale(delta: number) {
     this.scale += delta;
     this.scale = Math.max(0.5, this.scale)
+    this._cameraService.setScale(this.scale)
   }
 
   startDragging(event: MouseEvent) {

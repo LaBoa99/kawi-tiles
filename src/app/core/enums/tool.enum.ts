@@ -16,7 +16,7 @@ export enum TOOLS {
     // TOOLS SELECTION
     RECT_SURFACE,
     CIRCLE_SURFACE,
-    PENCIL_MAGIN,
+    MAGIC_PENCIL,
     TILEPICKER,
 }
 
@@ -32,17 +32,24 @@ export const TOOL_ICONS: Record<TOOLS, string> = {
 
     [TOOLS.RECT_SURFACE]: "bi bi-bounding-box-circles",
     [TOOLS.CIRCLE_SURFACE]: "bi bi-circle",
-    [TOOLS.PENCIL_MAGIN]: "bi bi-magic",
+    [TOOLS.MAGIC_PENCIL]: "bi bi-magic",
     [TOOLS.TILEPICKER]: "bi bi-eyedropper",
 }
 
-export const DEFAULT_CONFIG: Partial<Record<KEYBOARD, TOOLS>> = {
-    [KEYBOARD.P]: TOOLS.PENCIL,
-    [KEYBOARD.B]: TOOLS.BUCKET,
-    [KEYBOARD.E]: TOOLS.ERASER,
-    [KEYBOARD.R]: TOOLS.RECT,
-    [KEYBOARD.O]: TOOLS.ELLIPSE,
-    [KEYBOARD.H]: TOOLS.HAND,
-    [KEYBOARD.C]: TOOLS.CURSOR,
-    [KEYBOARD.S]: TOOLS.RECT_SURFACE,
+export const TOOL_NAMES: Record<TOOLS, string> = {
+    [TOOLS.CURSOR]: "Cursor",
+    [TOOLS.HAND]: "Hand",
+    [TOOLS.ERASER]: "Eraser",
+
+    [TOOLS.PENCIL]: "Pencil",
+    [TOOLS.BUCKET]: "Bucket",
+    [TOOLS.RECT]: "Rectangle",
+    [TOOLS.ELLIPSE]: "Ellipse",
+
+    [TOOLS.RECT_SURFACE]: "Rectangle Surface",
+    [TOOLS.CIRCLE_SURFACE]: "Circle Surface",
+    [TOOLS.MAGIC_PENCIL]: "Magic Pencil",
+    [TOOLS.TILEPICKER]: "Tilepicker",
 };
+
+

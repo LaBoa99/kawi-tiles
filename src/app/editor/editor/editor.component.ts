@@ -1,5 +1,7 @@
 import { Component, HostListener } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { isInKeyboard } from 'src/app/core/enums/keyboard.enum';
+import { ShortcutService } from 'src/app/services/shortcut.service';
 import { ToolService } from 'src/app/services/tool.service';
 
 @Component({
@@ -10,17 +12,18 @@ import { ToolService } from 'src/app/services/tool.service';
 export class EditorComponent {
 
   constructor(
-    private _toolService: ToolService
+    private _toolService: ToolService,
+    private _modalService: NgbModal,
+    private _shortCutService: ShortcutService,
   ) {
 
   }
 
-  @HostListener("document:keypress", ["$event"])
+  @HostListener("document:keydown", ["$event"])
   public onKeydown(event: KeyboardEvent) {
     try {
-      const key = event.key
-      isInKeyboard(key)
-      this._toolService.setTool(this._toolService.getToolByKey(key))
+      if (this._modalService.hasOpenModals()) return;
+      this._shortCutService.execute(event)
     } catch (error) { }
   }
 }

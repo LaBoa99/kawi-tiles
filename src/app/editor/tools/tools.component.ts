@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { TOOL_ICONS, TOOLS } from 'src/app/core/enums/tool.enum';
+import { SHORTCUTS, SHORTCUT_TOOLS } from 'src/app/core/enums/shortcut.enum';
+import { TOOL_ICONS, TOOL_NAMES, TOOLS } from 'src/app/core/enums/tool.enum';
 import { Tile } from 'src/app/core/interfaces/tileset.interface';
 import { PainterService } from 'src/app/services/painter.service';
 import { ToolService } from 'src/app/services/tool.service';
@@ -17,8 +18,8 @@ export class ToolsComponent implements OnInit {
 
   public actual_tool = this._toolService.tool$
 
-  tools = Object.entries(TOOL_ICONS).map(e => {
-    return { key: e[0], value: e[1] }
+  tools: { key: TOOLS, value: string }[] = Object.entries(TOOL_ICONS).map(e => {
+    return { key: e[0], value: e[1] } as any
   })
 
   constructor(
@@ -29,14 +30,9 @@ export class ToolsComponent implements OnInit {
   ngOnInit(): void {
     this.tile_primary = this._painterService.tile_primary$
     this.tile_secondary = this._painterService.tile_secondary$
-    console.log(
-      Object.entries(TOOL_ICONS).map(e => {
-        return { key: e[0], value: e[1] }
-      })
-    )
   }
 
-  setTool(tool: string) {
+  setTool(tool: string | TOOLS) {
     this._toolService.setTool(this.toTool(tool))
   }
 
@@ -50,5 +46,9 @@ export class ToolsComponent implements OnInit {
 
   swap() {
     this._painterService.swapTiles()
+  }
+
+  getToolTip(tool: TOOLS) {
+    return `${TOOL_NAMES[tool]} (${SHORTCUT_TOOLS[tool]})`
   }
 }

@@ -13,6 +13,10 @@ export class BehaviorListController<T> {
         return this.values
     }
 
+    clean(): void {
+        this._list$.next([])
+    }
+
     // Obtiene un elemento del arreglo en la posición 'index'.
     get(index: number): T | undefined {
         return this.values[index];

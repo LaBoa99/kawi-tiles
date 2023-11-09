@@ -1,7 +1,8 @@
 import { Component, ElementRef, HostListener, OnDestroy, OnInit } from '@angular/core';
-import { Subject, Subscription, debounceTime, takeUntil, toArray } from 'rxjs';
+import { Subject, Subscription, buffer, debounceTime, filter, scan, takeUntil, toArray } from 'rxjs';
 import { TCoordinate, Tilemap } from 'src/app/core/interfaces/tilemap.interface';
 import { Coord } from 'src/app/core/types/editor.type';
+import { CameraService } from 'src/app/services/camera.service';
 import { PainterService } from 'src/app/services/painter.service';
 import { TileProjectService } from 'src/app/services/tile-project.service';
 import { TilemapService } from 'src/app/services/tilemap.service';
@@ -24,13 +25,12 @@ export class TilemapComponent implements OnInit, OnDestroy {
 
   // Subscriptions
   private _mouseMoveSubscription !: Subscription
-  private _mouseStopSubscription !: Subscription
-
 
   constructor(
     private _tilemapService: TilemapService,
     private _tileprojectService: TileProjectService,
     private _painterService: PainterService,
+    private _cameraService: CameraService,
     private elemetRef: ElementRef
   ) {
 
@@ -41,38 +41,44 @@ export class TilemapComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this._tilemapService.tilemap$.subscribe(res => this.tilemap = res)
-    this._mouseStopSubscription = this._mouseStopSubject.asObservable().pipe(
-      debounceTime(1000)
-    ).subscribe(_ => console.log())
+    this._tilemapService.tilemap$.subscribe(res => {
+      this.tilemap = res
+    })
 
     this._mouseMoveSubscription = this._mouseMoveSubject.asObservable().pipe(
-      takeUntil(this._mouseStopSubject),
-      toArray()
-    ).subscribe(coords => {
-      console.log("Emitiendo", coords)
-      //this._tilemapService.setTiles(coords)
+      buffer(
+        this._mouseStopSubject.pipe(debounceTime(100))
+      ),
+      filter(coordsArray => coordsArray.length > 0)
+    ).subscribe(coordsArray => {
+      this._tilemapService.setTiles(coordsArray)
     })
   }
 
 
   @HostListener('mousemove', ['$event'])
   onMouseMove(event: MouseEvent) {
-    if (this.isLeftMouseDown && this.tilemap) {
-      const [x, y] = this.calibrateCoords(event.clientX, event.clientY)
-      const coords = this.getCell(x, y)
-      if (coords.join() == this._lastTileDrawed?.join()) return;
-      const [row, col] = coords
-      console.log(row, col)
-      const tile = this._painterService.getTile(false) || null
-      this.tilemap.board[row][col] = tile
-      this._lastTileDrawed = coords
-      this._mouseMoveSubject.next({ row, col, tile })
+    if (!this.isLeftMouseDown || !this.tilemap || !this.tilemap.board) {
+      return;
     }
+
+    const [x, y] = this.calibrateCoords(event.clientX, event.clientY);
+    const [row, col] = this.getCell(x, y);
+
+    if (this._lastTileDrawed?.join() === [row, col].join() || !this.tilemap.board[row]) {
+      return;
+    }
+
+    const tile = this._painterService.getTile(false);
+    this.tilemap.board[row][col] = tile;
+    this._lastTileDrawed = [row, col];
+    this._mouseMoveSubject.next({ row, col, tile });
   }
+
 
   @HostListener('mousedown', ['$event'])
   onMouseDown(event: MouseEvent) {
+    event.preventDefault()
     if (event.button == 0) {
       this.isLeftMouseDown = true
     }
@@ -87,13 +93,22 @@ export class TilemapComponent implements OnInit, OnDestroy {
   }
 
   calibrateCoords(x: number, y: number) {
-    return [x - this.rect.left, y - this.rect.top].map(Math.floor)
+    const scaledFactor = this._cameraService.getScale()
+    const scaledX = (x - this.rect.left) / scaledFactor;
+    const scaledY = (y - this.rect.top) / scaledFactor;
+    return [scaledX, scaledY].map(Math.floor)
   }
 
-  getCell(x: number, y: number): [ROW: number, COL: number] {
-    const [w, h] = this._tileprojectService.getSizeTile()
-    return [Math.floor(y / h), Math.floor(x / w)]
+  getCell(x: number, y: number) {
+    const [w, h] = this._tileprojectService.getSizeTile();
+    const [maxRows, maxCols] = this._tileprojectService.getGrid();
+
+    const row = Math.min(maxRows - 1, Math.max(0, Math.floor(y / h)));
+    const col = Math.min(maxCols - 1, Math.max(0, Math.floor(x / w)));
+
+    return [row, col];
   }
+
 
   get rect(): DOMRect {
     return (this.elemetRef.nativeElement as HTMLElement).getBoundingClientRect()

@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Tile } from 'src/app/core/interfaces/tileset.interface';
 import { PainterService } from 'src/app/services/painter.service';
+import { TileProjectService } from 'src/app/services/tile-project.service';
 
 @Component({
   selector: 'app-tile',
@@ -10,14 +11,10 @@ import { PainterService } from 'src/app/services/painter.service';
 export class TileComponent {
 
   @Input() tile: Tile | undefined | null
-  @Input() width: number = 32
-  @Input() height: number = 32
 
   constructor(
-    private _painterService: PainterService
-  ) {
-
-  }
+    private _painterService: PainterService,
+  ) { }
 
   setTile(isSecondary: boolean = false) {
     this.tile = this._painterService.getTile(isSecondary)

@@ -2,6 +2,7 @@ import { Injectable, Injector, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { DEFAULT_TILEPROJECT, TileProject } from '../core/interfaces/tileproject.interface';
 import { TilemapService } from './tilemap.service';
+import { Tilemap } from '../core/interfaces/tilemap.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -40,8 +41,10 @@ export class TileProjectService implements OnDestroy {
   }
 
   createTileProject(data: TileProject) {
-    this._tilemapService.createTilemap(data.rows, data.cols)
+    data.layers = []
+    this._tilemapService.reset()
     this._tileproject.next(data)
+    this.appendLayer()
   }
 
   appendLayer() {
@@ -62,6 +65,23 @@ export class TileProjectService implements OnDestroy {
   getGrid(): [ROWS: number, COLS: number] {
     const project = this.getTileProject()
     return [project.rows, project.cols]
+  }
+
+  setGrid(rows: number, cols: number) {
+    const tileproject = this.tileproject
+    tileproject.cols = cols
+    tileproject.rows = rows
+    this._tileproject.next(tileproject)
+  }
+
+  getLayers() {
+    return this.tileproject.layers
+  }
+
+  setLayers(layers: Tilemap[]) {
+    for (let i = 0; i < layers.length; i++) {
+      this._tilemapService.setTilemap(i, layers[i])
+    }
   }
 
   get tileproject() {

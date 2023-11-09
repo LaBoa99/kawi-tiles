@@ -6,6 +6,8 @@
             class="btn text-center tool flex-grow-1" 
             [ngClass]="{'active': toTool(tool.key) == (actual_tool | async)}"
             (click)="setTool(tool.key)"
+            placement="top"
+            [ngbTooltip]="getToolTip(tool.key)"
             >
             <i class="{{ tool.value }}"></i>
         </div>
