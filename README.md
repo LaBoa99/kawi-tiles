@@ -3,7 +3,7 @@
 </a>
 
 # Kawi's Tiles 🌵
-"Kawi's Tiles" es una aplicación web creada con Angular. Su propósito es crear tilemaps de manera sencilla, que pueden ser exportados en formato PNG o JSON en done en este se pueden guardar los tilesets de manera embebida. 
+"Kawi's Tiles" es una aplicación web creada con Angular. Su propósito es crear tilemaps de manera sencilla, que pueden ser exportados en formato PNG o JSON en este último se pueden guardar los tilesets de manera embebida. 
 El principal propósito de este proyecto es brindar una herramienta de fácil acceso, código libre y disponible para todos, que puede ser  aprovechado en la creación de mapas para con extraordinarias librerías gráficas como Pygame o uso personal.
 
 # Instalación
