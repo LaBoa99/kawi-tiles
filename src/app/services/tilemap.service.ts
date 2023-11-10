@@ -4,7 +4,7 @@ import { TCoordinate, Tilemap } from '../core/interfaces/tilemap.interface';
 import { Tile } from '../core/interfaces/tileset.interface';
 import { BehaviorListController } from '../core/utils/service_behavior';
 import { ToolService } from './tool.service';
-import { DRAWING_TOOLS, DRAWING_TOOLS_STRATEGIES } from '../core/enums/tool.enum';
+import { DRAWING_TOOLS, TOOL_STRATEGIES } from '../core/enums/tool.enum';
 import { DrawingSelectionStrategy, DrawingStrategy } from '../core/interfaces/draw.interface';
 import { CursorTool } from '../core/strategies/tools';
 import { Tool } from '../core/interfaces/tool.interface';
@@ -28,7 +28,7 @@ export class TilemapService {
     this.tilemaps$ = this.tilemapsController.subject$
     this._toolService.tool$.subscribe(res => {
       if (DRAWING_TOOLS.includes(res)) {
-        this.tool = DRAWING_TOOLS_STRATEGIES[res] || new CursorTool() as any
+        this.tool = TOOL_STRATEGIES[res] || new CursorTool() as any
       }
     })
   }

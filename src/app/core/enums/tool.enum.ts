@@ -1,5 +1,5 @@
 import { DrawingStrategy } from "../interfaces/draw.interface";
-import { BucketTool, CursorTool, EraserTool, PencilTool } from "../strategies/tools";
+import { BucketTool, CursorTool, EraserTool, PencilTool, RectSurfaceTool, RectTool } from "../strategies/tools";
 import { KEYBOARD } from "./keyboard.enum";
 
 
@@ -46,12 +46,13 @@ export const TOOL_ICONS: Record<TOOLS, string> = {
     [TOOLS.TILEPICKER]: "bi bi-eyedropper",
 }
 
-export const DRAWING_TOOLS_STRATEGIES: Partial<Record<TOOLS, DrawingStrategy>> = {
+export const TOOL_STRATEGIES: Partial<Record<TOOLS, DrawingStrategy>> = {
     [TOOLS.PENCIL]: new PencilTool(),
     [TOOLS.BUCKET]: new BucketTool(),
     [TOOLS.ERASER]: new EraserTool(),
-    [TOOLS.RECT]: new CursorTool(),
+    [TOOLS.RECT]: new RectTool(),
     [TOOLS.ELLIPSE]: new CursorTool(),
+    [TOOLS.RECT_SURFACE]: new RectSurfaceTool()
 }
 
 export const TOOL_NAMES: Record<TOOLS, string> = {

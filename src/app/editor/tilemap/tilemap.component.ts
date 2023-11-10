@@ -1,9 +1,9 @@
 import { Component, ElementRef, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Subject, Subscription, buffer, debounceTime, filter, scan, takeUntil, toArray } from 'rxjs';
-import { DRAWING_TOOLS_STRATEGIES, TOOLS } from 'src/app/core/enums/tool.enum';
+import { TOOL_STRATEGIES, TOOLS } from 'src/app/core/enums/tool.enum';
 import { TCoordinate, Tilemap } from 'src/app/core/interfaces/tilemap.interface';
 import { Tool } from 'src/app/core/interfaces/tool.interface';
-import { CursorTool, EraserTool } from 'src/app/core/strategies/tools';
+import { CursorTool, EraserTool, isSelectionTool } from 'src/app/core/strategies/tools';
 import { Coord } from 'src/app/core/types/editor.type';
 import { CameraService } from 'src/app/services/camera.service';
 import { PainterService } from 'src/app/services/painter.service';
@@ -61,7 +61,7 @@ export class TilemapComponent implements OnInit, OnDestroy {
     })
 
     this._toolSubscription = this._toolService.tool$.subscribe(res => {
-      this.tool = DRAWING_TOOLS_STRATEGIES[res] || new CursorTool() as any
+      this.tool = TOOL_STRATEGIES[res] || new CursorTool() as any
     })
 
     this._mouseStopSubscription = this._mouseStopSubject.asObservable().subscribe(res => {
@@ -76,7 +76,11 @@ export class TilemapComponent implements OnInit, OnDestroy {
     ).subscribe(coordsArray => {
       if (this.tilemap && this.tilemapTemp) {
         coordsArray = this.tool.select(coordsArray, this.tilemap)
-        this._tilemapService.setTiles(coordsArray)
+        if(isSelectionTool(this.tool)){
+
+        } else {
+          this._tilemapService.setTiles(coordsArray)
+        }
       }
     })
   }
@@ -126,10 +130,12 @@ export class TilemapComponent implements OnInit, OnDestroy {
 
     const tile = this._painterService.getTile(false);
 
+    if(this.tilemapTemp) 
+      this.tool.draw(this.tilemapTemp, [{col, row, tile}])
+    
     this._lastTileDrawed = [row, col];
     this._mouseMoveSubject.next({ row, col, tile });
-    this.tilemapTemp!.board[row][col] = tile
-  }
+}
 
   calibrateCoords(x: number, y: number) {
     const scaledFactor = this._cameraService.getScale()

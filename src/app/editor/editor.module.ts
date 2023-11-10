@@ -16,6 +16,7 @@ import { TilesetViewverComponent } from './tilesets/tileset-viewver/tileset-view
 import { LayersComponent } from './layers/layers.component';
 import { LayerComponent } from './layers/layer/layer.component';
 import { ProjectComponent } from './modals/project/project.component';
+import { SelectionTilemapComponent } from './tilemap/selection-tilemap/selection-tilemap.component';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { ProjectComponent } from './modals/project/project.component';
     TilesetViewverComponent,
     LayersComponent,
     LayerComponent,
-    ProjectComponent
+    ProjectComponent,
+    SelectionTilemapComponent
   ],
   imports: [
     CommonModule,

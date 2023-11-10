@@ -1,7 +1,11 @@
-import { DrawingStrategy } from "../interfaces/draw.interface";
+import { SelectionProvider } from '../interfaces/selection.interface';
 import { TCoordinate, Tilemap } from '../interfaces/tilemap.interface';
 import { Tile } from "../interfaces/tileset.interface";
-import { Tool } from "../interfaces/tool.interface";
+import { SelectionTool, Tool } from "../interfaces/tool.interface";
+
+export function isSelectionTool(object: any): object is SelectionTool {
+    return "emit" in object;
+}
 
 export class CursorTool extends Tool {
     override draw(tilemap: Tilemap, coordinates: TCoordinate[]): void {
@@ -19,6 +23,31 @@ export class EraserTool extends Tool {
         }
     }
 }
+
+export class RectTool extends Tool {
+    override select(coordinates: TCoordinate[], tilemap: Tilemap, lastDrawn?: TCoordinate | undefined): TCoordinate[] {
+        const start = coordinates[0];
+        const last = coordinates[coordinates.length - 1];
+        const { tile } = start;
+    
+        const countCols = last.col - start.col;
+        const countRows = last.row - start.row;
+        const direction = {
+            row: countRows == 0 ? 0 : countRows >= 1 ? 1 : -1,
+            col: countCols == 0 ? 0 : countCols >= 1 ? 1 : -1,
+        };
+    
+        const result: TCoordinate[] = [];
+        for (let i = start.row; i !== last.row + direction.row; i += direction.row) {
+            for (let j = start.col; j !== last.col + direction.col; j += direction.col) {
+                result.push({ row: i, col: j, tile });
+            }
+        }
+    
+        return result;
+    }    
+}
+
 
 export class BucketTool extends Tool {
     override select(coordinates: TCoordinate[], tilemap: Tilemap, lastDrawn?: TCoordinate): TCoordinate[] {
@@ -65,4 +94,25 @@ export class BucketTool extends Tool {
         return updatedCoordinates;
     }
 
+}
+
+// Selection tools 
+
+export class RectSurfaceTool extends RectTool implements SelectionTool {
+    emit(service: SelectionProvider, coordinates: TCoordinate[]): void {
+        service.emitSelection(this, coordinates)
+    }
+    override draw(tilemap: Tilemap, coordinates: TCoordinate[]): void {
+        return;
+    }
+}
+
+
+export class MagicPencil extends BucketTool implements SelectionTool {
+    emit(service: SelectionProvider, coordinates: TCoordinate[]): void {
+        service.emitSelection(this, coordinates)
+    }
+    override draw(tilemap: Tilemap, coordinates: TCoordinate[]): void {
+        return;
+    }
 }

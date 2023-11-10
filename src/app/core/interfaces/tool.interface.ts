@@ -1,4 +1,5 @@
 import { DrawingSelectionStrategy, DrawingStrategy } from "./draw.interface";
+import { SelectionProvider } from "./selection.interface";
 import { Tilemap, TCoordinate } from "./tilemap.interface";
 
 export class Tool implements DrawingStrategy, DrawingSelectionStrategy {
@@ -13,3 +14,8 @@ export class Tool implements DrawingStrategy, DrawingSelectionStrategy {
     }
 
 }
+
+export interface SelectionTool {
+    emit(service: SelectionProvider, coordinates: TCoordinate[]): void
+} 
+
