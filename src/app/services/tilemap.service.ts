@@ -3,6 +3,11 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { TCoordinate, Tilemap } from '../core/interfaces/tilemap.interface';
 import { Tile } from '../core/interfaces/tileset.interface';
 import { BehaviorListController } from '../core/utils/service_behavior';
+import { ToolService } from './tool.service';
+import { DRAWING_TOOLS, DRAWING_TOOLS_STRATEGIES } from '../core/enums/tool.enum';
+import { DrawingSelectionStrategy, DrawingStrategy } from '../core/interfaces/draw.interface';
+import { CursorTool } from '../core/strategies/tools';
+import { Tool } from '../core/interfaces/tool.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +20,17 @@ export class TilemapService {
   private _tilemapSubject = new BehaviorSubject<Tilemap | null | undefined>(null);
   public tilemap$: Observable<Tilemap | null | undefined> = this._tilemapSubject.asObservable();
 
+  private tool: Tool = new CursorTool()
   constructor(
+    private _toolService: ToolService
   ) {
     this.tilemapsController = new BehaviorListController<Tilemap>([])
     this.tilemaps$ = this.tilemapsController.subject$
+    this._toolService.tool$.subscribe(res => {
+      if (DRAWING_TOOLS.includes(res)) {
+        this.tool = DRAWING_TOOLS_STRATEGIES[res] || new CursorTool() as any
+      }
+    })
   }
 
   // Stack Operations
@@ -31,7 +43,8 @@ export class TilemapService {
   }
 
   setTilemap(i: number, tilemap: Tilemap) {
-    return this.tilemapsController.set(i, tilemap);
+    const result = this.tilemapsController.set(i, tilemap);
+    return result
   }
 
   getTilemap(i: number): Tilemap | undefined {
@@ -55,6 +68,14 @@ export class TilemapService {
     }
   }
 
+  getCurrentTilemap(): [index: number, tilemap: Tilemap | undefined | null] {
+    const currentTilemap = this._tilemapSubject.getValue()
+    if (currentTilemap == undefined || currentTilemap == null)
+      return [-1, currentTilemap]
+    const index = this.tilemapsController.all().indexOf(currentTilemap)
+    return [index, this.tilemapsController.get(index)]
+  }
+
   setTile(row: number, col: number, tile: Tile | null = null) {
     const currentTilemap = this._tilemapSubject.value;
     if (currentTilemap) {
@@ -64,12 +85,9 @@ export class TilemapService {
   }
 
   setTiles(coordinates: TCoordinate[]) {
-    const currentTilemap = this.currentTilemap
+    let currentTilemap = this.currentTilemap
     if (!currentTilemap) return;
-    for (const coord of coordinates) {
-      const { row, col, tile } = coord
-      currentTilemap.board[row][col] = tile
-    }
+    this.tool.draw(currentTilemap, coordinates)
     this._tilemapSubject.next(currentTilemap);
   }
 

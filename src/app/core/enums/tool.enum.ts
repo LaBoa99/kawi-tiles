@@ -1,3 +1,5 @@
+import { DrawingStrategy } from "../interfaces/draw.interface";
+import { BucketTool, CursorTool, EraserTool, PencilTool } from "../strategies/tools";
 import { KEYBOARD } from "./keyboard.enum";
 
 
@@ -20,6 +22,14 @@ export enum TOOLS {
     TILEPICKER,
 }
 
+export const DRAWING_TOOLS: Partial<TOOLS>[] = [
+    TOOLS.PENCIL,
+    TOOLS.BUCKET,
+    TOOLS.ERASER,
+    TOOLS.RECT,
+    TOOLS.ELLIPSE,
+]
+
 export const TOOL_ICONS: Record<TOOLS, string> = {
     [TOOLS.CURSOR]: "bi bi-cursor-fill",
     [TOOLS.HAND]: "bi bi-hand-index",
@@ -34,6 +44,14 @@ export const TOOL_ICONS: Record<TOOLS, string> = {
     [TOOLS.CIRCLE_SURFACE]: "bi bi-circle",
     [TOOLS.MAGIC_PENCIL]: "bi bi-magic",
     [TOOLS.TILEPICKER]: "bi bi-eyedropper",
+}
+
+export const DRAWING_TOOLS_STRATEGIES: Partial<Record<TOOLS, DrawingStrategy>> = {
+    [TOOLS.PENCIL]: new PencilTool(),
+    [TOOLS.BUCKET]: new BucketTool(),
+    [TOOLS.ERASER]: new EraserTool(),
+    [TOOLS.RECT]: new CursorTool(),
+    [TOOLS.ELLIPSE]: new CursorTool(),
 }
 
 export const TOOL_NAMES: Record<TOOLS, string> = {

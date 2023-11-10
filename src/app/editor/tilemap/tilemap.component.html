@@ -1,10 +1,12 @@
-<table draggable="false" *ngIf="tilemap; else noTilemap">
-  <tr draggable="false" *ngFor="let row of tilemap?.board; let rowIndex = index">
-    <td  draggable="false"*ngFor="let col of row; let colIndex = index">
-      <app-tile [tile]="col"></app-tile>
-    </td>
-  </tr>
-</table>
+<ng-container *ngIf="tilemap; else noTilemap">
+  <table draggable="false">
+    <tr draggable="false" *ngFor="let row of tilemapToDraw?.board; let rowIndex = index">
+      <td  draggable="false"*ngFor="let col of row; let colIndex = index">
+        <app-tile [tile]="col"></app-tile>
+      </td>
+    </tr>
+  </table>
+</ng-container>
 <ng-template #noTilemap>
   <div class="d-flex flex-column justify-content-center align-items-center h-100">
     <small class="text-muted">Deberias crear primero una capa 🌵</small>

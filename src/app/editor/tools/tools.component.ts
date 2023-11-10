@@ -4,6 +4,7 @@ import { SHORTCUTS, SHORTCUT_TOOLS } from 'src/app/core/enums/shortcut.enum';
 import { TOOL_ICONS, TOOL_NAMES, TOOLS } from 'src/app/core/enums/tool.enum';
 import { Tile } from 'src/app/core/interfaces/tileset.interface';
 import { PainterService } from 'src/app/services/painter.service';
+import { ShortcutService } from 'src/app/services/shortcut.service';
 import { ToolService } from 'src/app/services/tool.service';
 
 @Component({
@@ -24,7 +25,7 @@ export class ToolsComponent implements OnInit {
 
   constructor(
     private _painterService: PainterService,
-    private _toolService: ToolService
+    private _toolService: ToolService,
   ) {
   }
   ngOnInit(): void {
@@ -33,7 +34,8 @@ export class ToolsComponent implements OnInit {
   }
 
   setTool(tool: string | TOOLS) {
-    this._toolService.setTool(this.toTool(tool))
+    const toolValue: TOOLS | undefined = Object.values(TOOLS).find(value => value == tool) as TOOLS | undefined
+    if (toolValue) this._toolService.tools[toolValue]?.execute()
   }
 
   originalOrder() {

@@ -1,7 +1,9 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Subscription } from 'rxjs';
 import { Tile, Tileset } from 'src/app/core/interfaces/tileset.interface';
+import { TileProjectService } from 'src/app/services/tile-project.service';
 import { TilesetService } from 'src/app/services/tileset.service';
 
 @Component({
@@ -14,13 +16,17 @@ export class TilesetModalComponent implements OnInit, OnDestroy {
   public form !: FormGroup
   public defaultValue: Tileset | undefined
 
+  private _tileprojectSubscription !: Subscription
+
   constructor(
     private modalService: NgbModal,
-    private tilesetService: TilesetService,
+    private _tileProjectService: TileProjectService,
+    private _tilesetService: TilesetService,
     private fb: FormBuilder
   ) { }
 
   ngOnDestroy(): void {
+    if (this._tileprojectSubscription) this._tileprojectSubscription.unsubscribe()
     this.modalService.dismissAll()
   }
 
@@ -37,8 +43,13 @@ export class TilesetModalComponent implements OnInit, OnDestroy {
       rows: [1],
       gap_x: [0, [Validators.required, Validators.min(0)]],
       gap_y: [0, [Validators.required, Validators.min(0)]],
-      tile_w: [0, [Validators.required, Validators.min(1)]],
-      tile_h: [0, [Validators.required, Validators.min(1)]],
+      tile_w: [32, [Validators.required, Validators.min(1)]],
+      tile_h: [32, [Validators.required, Validators.min(1)]],
+    })
+
+    this._tileprojectSubscription = this._tileProjectService.tileproject$.subscribe(res => {
+      this.form.get("tile_w")?.setValue(res.tile_w)
+      this.form.get("tile_h")?.setValue(res.tile_h)
     })
   }
 
@@ -81,7 +92,7 @@ export class TilesetModalComponent implements OnInit, OnDestroy {
     const tiles = await this.getTiles()
     const data = this.form.value
     const tileset: Tileset = { ...data, tiles }
-    this.tilesetService.create(tileset)
+    this._tilesetService.create(tileset)
     modal.close("form submit")
   }
 

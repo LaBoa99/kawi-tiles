@@ -82,6 +82,8 @@ export class TileProjectService implements OnDestroy {
     for (let i = 0; i < layers.length; i++) {
       this._tilemapService.setTilemap(i, layers[i])
     }
+    const [index, currentTilemap] = this._tilemapService.getCurrentTilemap()
+    this._tilemapService.selectTilemap(index)
   }
 
   get tileproject() {

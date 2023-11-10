@@ -32,6 +32,7 @@ export class ToolService {
 
   setTool(tool: TOOLS | undefined) {
     if (tool) {
+      console.log(tool, TOOLS.ERASER)
       this._tool.next(tool)
     }
   }
