@@ -1,6 +1,5 @@
 import { Component, HostListener } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { isInKeyboard } from 'src/app/core/enums/keyboard.enum';
 import { ShortcutService } from 'src/app/services/shortcut.service';
 import { ToolService } from 'src/app/services/tool.service';
 

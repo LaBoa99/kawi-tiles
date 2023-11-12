@@ -1,14 +1,29 @@
-<ng-container *ngIf="tilemap; else noTilemap">
-  <table draggable="false">
-    <tr draggable="false" *ngFor="let row of tilemapToDraw?.board; let rowIndex = index">
-      <td  draggable="false"*ngFor="let col of row; let colIndex = index">
-        <app-tile [tile]="col"></app-tile>
-      </td>
-    </tr>
-  </table>
+<ng-container *ngIf="dummyTilemap; else noTilemap">
+    <app-tilemap-canvas
+        [layer]="dummyTilemap"
+        [isGridLayer]="true"
+    ></app-tilemap-canvas>
+    <div style="position: relative;">
+        <ng-container
+            *ngFor="let tilemap of layers; let i = index; trackBy: trackByTilemap"
+        >
+            <app-tilemap-canvas
+                [layer]="tilemap"
+                [style.z-index.px]="-i"
+                [hidden]="!tilemap.visible"
+            ></app-tilemap-canvas>
+        </ng-container>
+    </div>
+    <app-tilemap-canvas
+        *ngIf="dummyTilemap; else noTilemap"
+        [layer]="dummyTilemap"
+        [isHoverLayer]="true"
+    ></app-tilemap-canvas>
 </ng-container>
 <ng-template #noTilemap>
-  <div class="d-flex flex-column justify-content-center align-items-center h-100">
-    <small class="text-muted">Deberias crear primero una capa 🌵</small>
-  </div>
+    <div
+        class="d-flex flex-column justify-content-center align-items-center h-100"
+    >
+        <small class="text-muted">Deberias crear primero una capa 🌵</small>
+    </div>
 </ng-template>

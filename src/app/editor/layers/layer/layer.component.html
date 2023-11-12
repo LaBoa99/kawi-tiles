@@ -1,9 +1,9 @@
 <div class="layer btn d-flex flex-row justify-content-between align-items-center px-2" 
     (click)="onClick()"
-    [ngClass]="{'active': (selectedTilemap$ | async) == layer}">
+    [ngClass]="{'active': (selectedTilemap$ | async)?.id == layer.id}">
     <small class="">{{ layer.name }}</small>
     <div class="d-flex flex-row justify-content-between align-items-center gap-2">
-        <i class="bi" [ngClass]="isVisible ? 'bi-eye' : 'bi-eye-slash'" (click)="toggleVisibility()"></i>
+        <i class="bi" [ngClass]="layer.visible ? 'bi-eye' : 'bi-eye-slash'" (click)="toggleVisibility()"></i>
         <i class="bi bi-copy"></i>
         <i class="bi bi-grip-vertical grab"></i>
     </div>

@@ -17,6 +17,7 @@ import { LayersComponent } from './layers/layers.component';
 import { LayerComponent } from './layers/layer/layer.component';
 import { ProjectComponent } from './modals/project/project.component';
 import { SelectionTilemapComponent } from './tilemap/selection-tilemap/selection-tilemap.component';
+import { TilemapCanvasComponent } from './tilemap/tilemap-canvas/tilemap-canvas.component';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { SelectionTilemapComponent } from './tilemap/selection-tilemap/selection
     LayersComponent,
     LayerComponent,
     ProjectComponent,
-    SelectionTilemapComponent
+    SelectionTilemapComponent,
+    TilemapCanvasComponent
   ],
   imports: [
     CommonModule,

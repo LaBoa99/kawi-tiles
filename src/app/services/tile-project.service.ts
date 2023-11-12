@@ -3,6 +3,7 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 import { DEFAULT_TILEPROJECT, TileProject } from '../core/interfaces/tileproject.interface';
 import { TilemapService } from './tilemap.service';
 import { Tilemap } from '../core/interfaces/tilemap.interface';
+import { Tile } from '../core/interfaces/tileset.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -27,11 +28,23 @@ export class TileProjectService implements OnDestroy {
       }
     })
 
-    this.tilemap$ = this._tilemapService.tilemaps$.subscribe(tilemap => {
+    this.tilemap$ = this._tilemapService.tilemap$.subscribe((tilemap: Tilemap | null | undefined) => {
       const tileproject = this.tileproject
-      if (tileproject) {
-        this._tileproject.next(tileproject)
+      if (tilemap) {
+        const index = this.tileproject.layers.indexOf(tilemap)
+        if (index > -1) tileproject.layers[index] = tilemap
       }
+      this._tileproject.next(tileproject)
+    })
+
+    this.createTileProject({
+      cols: 8,
+      rows: 8,
+      layers: [],
+      tile_h: 32,
+      tile_w: 32,
+      tilesets: [],
+      title: "Prueba"
     })
   }
 
@@ -85,6 +98,19 @@ export class TileProjectService implements OnDestroy {
     const [index, currentTilemap] = this._tilemapService.getCurrentTilemap()
     this._tilemapService.selectTilemap(index)
   }
+
+  genDummyTiles(n: number): Tile[] {
+    const [rows, cols] = this.getGrid();
+    const result: Tile[] = [];
+    let id = rows * cols;
+
+    for (let i = 0; i < n; i++) {
+      result.push({ row: 1, col: 1, id: id++, image: null });
+    }
+
+    return result;
+  }
+
 
   get tileproject() {
     return this._tileproject.getValue()

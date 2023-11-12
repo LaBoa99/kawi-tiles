@@ -1,6 +1,5 @@
 import { DrawingStrategy } from "../interfaces/draw.interface";
-import { BucketTool, CursorTool, EraserTool, PencilTool, RectSurfaceTool, RectTool } from "../strategies/tools";
-import { KEYBOARD } from "./keyboard.enum";
+import { BucketTool, CursorTool, EraserTool, MagicPencil, PencilTool, RectSurfaceTool, RectTool, TilePickerTool } from "../strategies/tools";
 
 
 export enum TOOLS {
@@ -52,7 +51,9 @@ export const TOOL_STRATEGIES: Partial<Record<TOOLS, DrawingStrategy>> = {
     [TOOLS.ERASER]: new EraserTool(),
     [TOOLS.RECT]: new RectTool(),
     [TOOLS.ELLIPSE]: new CursorTool(),
-    [TOOLS.RECT_SURFACE]: new RectSurfaceTool()
+    [TOOLS.RECT_SURFACE]: new RectSurfaceTool(),
+    [TOOLS.TILEPICKER]: new TilePickerTool(),
+    [TOOLS.MAGIC_PENCIL]: new MagicPencil()
 }
 
 export const TOOL_NAMES: Record<TOOLS, string> = {

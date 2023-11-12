@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { TOOL_STRATEGIES } from '../core/enums/tool.enum';
 import { TCoordinate, Tilemap } from '../core/interfaces/tilemap.interface';
 import { Tile } from '../core/interfaces/tileset.interface';
+import { Tool } from '../core/interfaces/tool.interface';
+import { CursorTool } from '../core/strategies/tools';
 import { BehaviorListController } from '../core/utils/service_behavior';
 import { ToolService } from './tool.service';
-import { DRAWING_TOOLS, TOOL_STRATEGIES } from '../core/enums/tool.enum';
-import { DrawingSelectionStrategy, DrawingStrategy } from '../core/interfaces/draw.interface';
-import { CursorTool } from '../core/strategies/tools';
-import { Tool } from '../core/interfaces/tool.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -27,9 +26,7 @@ export class TilemapService {
     this.tilemapsController = new BehaviorListController<Tilemap>([])
     this.tilemaps$ = this.tilemapsController.subject$
     this._toolService.tool$.subscribe(res => {
-      if (DRAWING_TOOLS.includes(res)) {
-        this.tool = TOOL_STRATEGIES[res] || new CursorTool() as any
-      }
+      this.tool = TOOL_STRATEGIES[res] || new CursorTool() as any
     })
   }
 
@@ -53,7 +50,8 @@ export class TilemapService {
 
   // Crea un nuevo Tilemap
   createTilemap(rows: number, cols: number) {
-    const newTilemap: Tilemap = { board: this.__gen_board(rows, cols), name: this.genLayerName() }
+    const newTilemap: Tilemap = { board: this.__gen_board(rows, cols), name: this.genLayerName(), id: this.genLayerId(), visible: true }
+    console.log(this.genLayerId())
     this.unshiftTilemap(newTilemap)
     this._tilemapSubject.next(newTilemap);
     this.selectTilemap(this.tilemapsController.all().length - 1)
@@ -76,10 +74,10 @@ export class TilemapService {
     return [index, this.tilemapsController.get(index)]
   }
 
-  setTile(row: number, col: number, tile: Tile | null = null) {
+  setTile(row: number, col: number, tile: Tile) {
     const currentTilemap = this._tilemapSubject.value;
     if (currentTilemap) {
-      currentTilemap.board[row][col] = tile;
+      currentTilemap.board[row][col].image = tile.image;
       this._tilemapSubject.next(currentTilemap);
     }
   }
@@ -94,16 +92,31 @@ export class TilemapService {
   genLayerName(): string {
     return `Capa #${this.tilemapsController.all().length + 1}`
   }
+  genLayerId(): number {
+    return this.tilemapsController.all().length
+  }
 
   reset() {
     this.tilemapsController.clean()
     this._tilemapSubject.next(undefined)
   }
 
-  private __gen_board(rows: number, cols: number): any[][] {
-    const board = new Array(rows);
+  genDummyTilemap(rows: number, cols: number): Tilemap {
+    return {
+      board: this.__gen_board(rows, cols),
+      id: -1,
+      name: "Dummy",
+      visible: true,
+    }
+  }
+
+  private __gen_board(rows: number, cols: number): Tile[][] {
+    const board: Tile[][] = new Array(rows);
     for (let i = 0; i < rows; i++) {
-      board[i] = new Array(cols).fill(null);
+      board[i] = new Array(cols)
+      for (let j = 0; j < cols; j++) {
+        board[i][j] = { row: i, col: j, image: null, id: (i * cols) + j }
+      }
     }
     return board;
   }

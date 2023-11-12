@@ -1,8 +1,10 @@
 import { Tile, Tileset } from "./tileset.interface"
 
 export interface Tilemap {
+    id: any
     name?: string
-    board: (Tile | null | undefined)[][]
+    visible: boolean
+    board: Tile[][]
 }
 
 export interface TCoordinate {

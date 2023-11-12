@@ -15,7 +15,7 @@ export interface Tileset {
 }
 
 export interface Tile {
-    image: string
+    image: string | null | undefined
     row: number
     col: number
     id: number

@@ -14,7 +14,6 @@ export class LayerComponent {
   @Input() layer !: Tilemap
   @Output() click = new EventEmitter<Tilemap>()
 
-  public isVisible: boolean = true
   public selectedTilemap$ !: Observable<Tilemap | null | undefined>
 
   constructor(
@@ -24,7 +23,7 @@ export class LayerComponent {
   }
 
   toggleVisibility() {
-    this.isVisible = !this.isVisible
+    this.layer.visible = !this.layer.visible
   }
 
   onClick() {

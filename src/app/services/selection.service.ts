@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 import { SelectionProvider } from '../core/interfaces/selection.interface';
 import { TCoordinate } from '../core/interfaces/tilemap.interface';
-import { PainterService } from './painter.service';
-import { TileProjectService } from './tile-project.service';
-import { TilemapService } from './tilemap.service';
-import { BehaviorSubject, Subject } from 'rxjs';
 import { SelectionTool } from '../core/interfaces/tool.interface';
 
 @Injectable({
@@ -16,14 +13,14 @@ export class SelectionService implements SelectionProvider {
   public selectionBoard$ = this._selectionBoard.asObservable()
 
   constructor(
-  ) { 
+  ) {
   }
 
   emitSelection(tool: SelectionTool, coordinates: TCoordinate[]): void {
     this._selectionBoard.next([tool, coordinates])
   }
 
-  clean(){
+  clean() {
     this._selectionBoard.next([undefined, []])
   }
 }
