@@ -25,9 +25,9 @@ export class FileService {
     this.fileDirector = new FileDirector()
   }
 
-  downloadFile(data: TileProject, filename: string, filetype: ExportFileTypes): void {
+  async downloadFile(data: TileProject, filename: string, filetype: ExportFileTypes): Promise<void> {
     const builder = this.chooseBuilder(filetype)
-    const file = this.fileDirector.construct(builder, data, filename)
+    const file = await this.fileDirector.construct(builder, data, filename)
     this.donwload(file)
   }
 
