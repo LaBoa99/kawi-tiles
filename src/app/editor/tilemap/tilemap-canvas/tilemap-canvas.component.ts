@@ -1,12 +1,14 @@
-import { AfterViewInit, Component, ElementRef, HostListener, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subject, Subscription, buffer, filter } from 'rxjs';
+import { LayerType } from 'src/app/core/enums/canvas.enum';
 import { MOUSE } from 'src/app/core/enums/mouse.enum';
-import { TOOL_STRATEGIES } from 'src/app/core/enums/tool.enum';
+import { TOOLS, TOOL_STRATEGIES } from 'src/app/core/enums/tool.enum';
 import { TCoordinate, Tilemap } from 'src/app/core/interfaces/tilemap.interface';
 import { Tile } from 'src/app/core/interfaces/tileset.interface';
 import { Tool } from 'src/app/core/interfaces/tool.interface';
 import { CursorTool, isSelectionTool } from 'src/app/core/strategies/tools';
 import { Coord } from 'src/app/core/types/editor.type';
+import { CoordsUtils } from 'src/app/core/utils/coords.utils';
 import { CameraService } from 'src/app/services/camera.service';
 import { PainterService } from 'src/app/services/painter.service';
 import { SelectionService } from 'src/app/services/selection.service';
@@ -17,31 +19,34 @@ import { ToolService } from 'src/app/services/tool.service';
 @Component({
   selector: 'app-tilemap-canvas',
   template: `
-    <canvas #surface></canvas>
+    <canvas #surface [ngClass]="{'bg-white': isGrid}"></canvas>
   `,
   styleUrls: ['./tilemap-canvas.component.scss']
 })
-export class TilemapCanvasComponent implements OnInit, OnDestroy, AfterViewInit, OnChanges {
+export class TilemapCanvasComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @Input() layer !: Tilemap
-  @Input() isHoverLayer: boolean = false
-  @Input() isGridLayer: boolean = false
+  @Input() layerType: LayerType = LayerType.SURFACE
 
   @ViewChild("surface", { static: true })
   private canvas?: ElementRef<HTMLCanvasElement>
   private context !: CanvasRenderingContext2D | null
 
   // Config 
+  public leftMouseDown: boolean = false
   private tile_w: number = 1
   private tile_h: number = 1
   private rows: number = 1
   private cols: number = 1
   private tool !: Tool
-  public isLeftMouseDown: boolean = false
 
   // Others
-  private _lastTileDrawed: Coord | undefined
-  private lastTouchedCell: Coord | undefined
+  private _lastTileDrawn: Coord | undefined
+  private _lastTouchedCell: Coord | undefined
+  private _lastSelectedCells: Coord[] = []
+
+  SELECTION_FILL_COLOR = 'rgba(150, 0, 0, 0.2)';
+  HOVER_FILL_COLOR = 'rgba(0, 255, 255, 0.2)';
 
   //Observables
   private _mouseMoveSubject = new Subject<TCoordinate>()
@@ -64,9 +69,6 @@ export class TilemapCanvasComponent implements OnInit, OnDestroy, AfterViewInit,
 
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-  }
-
   ngOnDestroy(): void {
     if (this._mouseMoveSubscription) this._mouseMoveSubscription.unsubscribe()
     if (this._toolSubscription) this._toolSubscription.unsubscribe()
@@ -82,10 +84,8 @@ export class TilemapCanvasComponent implements OnInit, OnDestroy, AfterViewInit,
       this.drawTilemap()
     })
 
-    this._mouseStopSubscription = this._mouseStopSubject.asObservable().subscribe(_ => { })
-
     this._toolSubscription = this._toolService.tool$.subscribe(res => {
-      this.tool = TOOL_STRATEGIES[res] || new CursorTool() as any
+      this.tool = (TOOL_STRATEGIES[res] || new CursorTool()) as Tool
     })
 
     this._mouseMoveSubscription = this._mouseMoveSubject.asObservable().pipe(
@@ -102,6 +102,16 @@ export class TilemapCanvasComponent implements OnInit, OnDestroy, AfterViewInit,
         }
       }
     })
+
+    if (this.layerType == LayerType.SELECT) {
+      this._selectionService.selectionBoard$.subscribe(res => {
+        const [tool, coordinates] = res
+        if (!tool || this._toolService.getTool() === TOOLS.TILEPICKER) return;
+        this.drawSelection(coordinates)
+        this._lastSelectedCells = CoordsUtils.tcoordinateToCoord(...coordinates)
+      })
+    }
+
   }
 
   ngAfterViewInit(): void {
@@ -112,8 +122,8 @@ export class TilemapCanvasComponent implements OnInit, OnDestroy, AfterViewInit,
   @HostListener('mousedown', ['$event'])
   onMouseDown(event: MouseEvent) {
     event.preventDefault()
-    if ((event.button == MOUSE.MAIN || event.button == MOUSE.SECONDARY) && this.isLeftMouseDown == false) {
-      this.isLeftMouseDown = true
+    if ((event.button == MOUSE.MAIN || event.button == MOUSE.SECONDARY) && this.leftMouseDown == false) {
+      this.leftMouseDown = true
       this.select(event)
     }
   }
@@ -121,15 +131,15 @@ export class TilemapCanvasComponent implements OnInit, OnDestroy, AfterViewInit,
   @HostListener('mouseup', ['$event'])
   onMouseUp(event: MouseEvent) {
     if (event.button == MOUSE.MAIN || event.button == MOUSE.SECONDARY) {
-      this.isLeftMouseDown = false
+      this.leftMouseDown = false
       this._mouseStopSubject.next(true)
     }
   }
 
   @HostListener('mouseleave', ['$event'])
   onMouseLeave(_event: MouseEvent) {
-    this.isLeftMouseDown = false
-    this.cleanLastTounchedCell()
+    this.leftMouseDown = false
+    if (this._lastTouchedCell) this.cleanCells([this._lastTouchedCell])
     this._mouseStopSubject.next(true)
   }
 
@@ -139,19 +149,19 @@ export class TilemapCanvasComponent implements OnInit, OnDestroy, AfterViewInit,
     const [row, col] = this.getCellByEvent(event)
     this.drawTileHover(row, col)
     // Mouse click izquierdo presionado
-    if ((event.button == MOUSE.MAIN || event.button == MOUSE.SECONDARY) && this.isLeftMouseDown) {
+    if ((event.button == MOUSE.MAIN || event.button == MOUSE.SECONDARY) && this.leftMouseDown) {
       this.select(event)
     }
   }
 
   private select(event: MouseEvent) {
     const [row, col] = this.getCellByEvent(event)
-    if (this._lastTileDrawed?.join() === [row, col].join() || !this.layer.board[row]) {
+    if (this._lastTileDrawn?.join() === [row, col].join() || !this.layer.board[row]) {
       return;
     }
 
     const tile = this._painterService.getTile(event.button == MOUSE.SECONDARY)
-    this._lastTileDrawed = [row, col];
+    this._lastTileDrawn = [row, col];
     this._mouseMoveSubject.next({ row, col, tile })
   }
 
@@ -190,7 +200,7 @@ export class TilemapCanvasComponent implements OnInit, OnDestroy, AfterViewInit,
 
 
   private drawTilemap(): void {
-    if (this.isGridLayer) {
+    if (this.layerType == LayerType.GRID) {
       this.drawGrid()
     } else {
       this.drawLayer(this.layer)
@@ -203,18 +213,31 @@ export class TilemapCanvasComponent implements OnInit, OnDestroy, AfterViewInit,
     const horizontalLines = this.surface.height / this.tile_h
     const verticalLines = this.surface.width / this.tile_w
 
-    for (let i = 1; i < horizontalLines; i++) {
+    for (let i = 0; i < horizontalLines + 1; i++) {
       this.context.beginPath()
       this.context.moveTo(0, this.tile_h * i)
       this.context.lineTo(this.surface.width, this.tile_h * i)
       this.context.stroke()
     }
 
-    for (let i = 1; i < verticalLines; i++) {
+    for (let i = 0; i < verticalLines + 1; i++) {
       this.context.beginPath()
       this.context.moveTo(this.tile_w * i, 0)
       this.context.lineTo(this.tile_w * i, this.surface.height)
       this.context.stroke()
+    }
+  }
+
+  private drawSelection(coords: TCoordinate[]) {
+    if (this.context && this.layerType == LayerType.SELECT) {
+      this.cleanCells(this._lastSelectedCells)
+      for (const coord of coords) {
+        const { row, col } = coord
+        const [x, y] = this.coordinateToXY(row, col)
+        this.context.fillStyle = this.SELECTION_FILL_COLOR;
+        this.context.fillRect(x, y, this.tile_w, this.tile_h)
+        this._lastTouchedCell = [row, col]
+      }
     }
   }
 
@@ -235,20 +258,23 @@ export class TilemapCanvasComponent implements OnInit, OnDestroy, AfterViewInit,
   }
 
   private drawTileHover(row: number, col: number) {
-    if (this.context && this.isHoverLayer) {
-      this.cleanLastTounchedCell()
+    if (this.context && this.layerType == LayerType.HOVER) {
+      if (this._lastTouchedCell)
+        this.cleanCells([this._lastTouchedCell])
       const [x, y] = this.coordinateToXY(row, col)
-      this.context.fillStyle = 'rgba(0, 255, 255, 0.2)';
+      this.context.fillStyle = this.HOVER_FILL_COLOR;
       this.context.fillRect(x, y, this.tile_w, this.tile_h)
-      this.lastTouchedCell = [row, col]
+      this._lastTouchedCell = [row, col]
     }
   }
 
-  private cleanLastTounchedCell() {
-    if (this.lastTouchedCell && this.context && this.isHoverLayer) {
-      const [row, col] = this.lastTouchedCell
-      const [x, y] = this.coordinateToXY(row, col)
-      this.context.clearRect(x, y, this.tile_w, this.tile_h)
+  private cleanCells(coords: Coord[]) {
+    if (this.context) {
+      for (const coord of coords) {
+        const [row, col] = coord
+        const [x, y] = this.coordinateToXY(row, col)
+        this.context.clearRect(x, y, this.tile_w, this.tile_h)
+      }
     }
   }
 
@@ -262,6 +288,10 @@ export class TilemapCanvasComponent implements OnInit, OnDestroy, AfterViewInit,
 
   get surface() {
     return this.canvas?.nativeElement as HTMLCanvasElement
+  }
+
+  get isGrid() {
+    return this.layerType == LayerType.GRID
   }
 
 }

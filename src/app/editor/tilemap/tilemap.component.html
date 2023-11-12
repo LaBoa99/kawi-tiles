@@ -1,7 +1,7 @@
 <ng-container *ngIf="dummyTilemap; else noTilemap">
     <app-tilemap-canvas
         [layer]="dummyTilemap"
-        [isGridLayer]="true"
+        [layerType]="layerType.GRID"
     ></app-tilemap-canvas>
     <div style="position: relative;">
         <ng-container
@@ -15,9 +15,14 @@
         </ng-container>
     </div>
     <app-tilemap-canvas
+    *ngIf="dummyTilemap; else noTilemap"
+    [layer]="dummyTilemap"
+    [layerType]="layerType.SELECT"
+    ></app-tilemap-canvas>
+    <app-tilemap-canvas
         *ngIf="dummyTilemap; else noTilemap"
         [layer]="dummyTilemap"
-        [isHoverLayer]="true"
+        [layerType]="layerType.HOVER"
     ></app-tilemap-canvas>
 </ng-container>
 <ng-template #noTilemap>

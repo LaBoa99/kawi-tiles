@@ -4,6 +4,7 @@ import { ModalService } from 'src/app/services/modal.service';
 import { AddColCommand } from '../../commands/tileproject.commad';
 import { TileProject } from '../../interfaces/tileproject.interface';
 import { TileProjectService } from 'src/app/services/tile-project.service';
+import { ExportComponent } from 'src/app/editor/modals/export/export.component';
 
 @Component({
   selector: 'app-navbar',
@@ -29,6 +30,10 @@ export class NavbarComponent implements OnInit {
 
   openProjectModal() {
     this._modalService.openModal(ProjectComponent)
+  }
+
+  openExportModal() {
+    this._modalService.openModal(ExportComponent)
   }
 
   addRow() {

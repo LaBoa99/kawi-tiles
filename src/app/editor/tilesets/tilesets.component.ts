@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { TilesetService } from 'src/app/services/tileset.service';
 import { Tile, Tileset } from '../../core/interfaces/tileset.interface';
 import { PainterService } from 'src/app/services/painter.service';
+import { Confirmable } from 'src/app/core/decorators/confirmable.decorator';
 
 @Component({
   selector: 'app-tilesets',
@@ -28,6 +29,7 @@ export class TilesetsComponent implements OnInit {
     this.tiles = tileset.tiles || []
   }
 
+  @Confirmable({}, "¿Quieres eliminar este Tileset?")
   removeTiles(tileset: Tileset) {
     if (this._tilesetService.remove(tileset))
       this.tiles = []

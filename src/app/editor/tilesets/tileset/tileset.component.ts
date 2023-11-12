@@ -5,7 +5,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   template: `
     <div class="d-flex flex-row align-items-center justify-content-between flex-shrink-0 border-end border-secondary">
       <span (click)="onclick()" class="small flex-shrink-0"> {{ title}} </span>
-      <button class="btn btn-sm border-0 h-100 flex-grow-1 me-2" (click)="ondelete()">
+      <button class="btn btn-sm border-0 h-100 flex-grow-1 me-1 ms-3" (click)="ondelete()">
         <i class="bi bi-x"></i>
       </button>
     </div>
