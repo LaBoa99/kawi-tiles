@@ -41,6 +41,9 @@ export class RectTool extends Tool {
         super(TOOLS.RECT)
     }
     override select(coordinates: TCoordinate[], tilemap: Tilemap, lastDrawn?: TCoordinate | undefined): TCoordinate[] {
+        if (coordinates.length == 1) {
+            return coordinates
+        }
         const start = coordinates[0];
         const last = coordinates[coordinates.length - 1];
         const { tile } = start;
@@ -48,18 +51,35 @@ export class RectTool extends Tool {
         const countCols = last.col - start.col;
         const countRows = last.row - start.row;
         const direction = {
-            row: countRows == 0 ? 0 : countRows >= 1 ? 1 : -1,
-            col: countCols == 0 ? 0 : countCols >= 1 ? 1 : -1,
+            row: countRows === 0 ? 0 : countRows >= 0 ? 1 : -1,
+            col: countCols === 0 ? 0 : countCols >= 0 ? 1 : -1,
         };
+        const result: TCoordinate[] = Math.abs(direction.row) == 1 && Math.abs(direction.col) == 1
+            ? this.selectHasRectangle(start, last, direction, tile)
+            : direction.row == 0
+                ? this.selectHasLine(start.col, start.row, last.col, direction.col, true, tile)
+                : this.selectHasLine(start.row, start.col, last.row, direction.row, false, tile);
 
-        const result: TCoordinate[] = [];
+        return result;
+    }
+
+    // este solo funciona si direcction es 1 o 1
+    selectHasRectangle(start: TCoordinate, last: TCoordinate, direction: ICoord, tile: Tile | null | undefined) {
+        const result = []
         for (let i = start.row; i !== last.row + direction.row; i += direction.row) {
             for (let j = start.col; j !== last.col + direction.col; j += direction.col) {
                 result.push({ row: i, col: j, tile });
             }
         }
+        return result
+    }
 
-        return result;
+    selectHasLine(start: number, c: number, end: number, direction: number, isX: boolean, tile: Tile | null | undefined) {
+        const result = []
+        for (let i = start; i !== end + direction; i += direction) {
+            result.push(isX ? { row: c, col: i, tile } : { row: i, col: c, tile });
+        }
+        return result
     }
 }
 
@@ -70,12 +90,8 @@ export class BucketTool extends Tool {
     override select(coordinates: TCoordinate[], tilemap: Tilemap, lastDrawn?: TCoordinate): TCoordinate[] {
         // retorna las coordendas y tile es el que esta en painter
         const { row, col, tile } = coordinates[0]
-        console.log(coordinates)
         if (!tile) return [];
-
-        console.log("tilemap", tilemap)
         const coords = this.floodFill(structuredClone(tilemap), row, col, tile, tilemap.board[row][col])
-        console.log("coords", coords)
         return coords
     }
 

@@ -29,7 +29,7 @@ export const DRAWING_TOOLS: Partial<TOOLS>[] = [
     TOOLS.ELLIPSE,
 ]
 
-export const TOOL_ICONS: Record<TOOLS, string> = {
+export const TOOL_ICONS: Partial<Record<TOOLS, string>> = {
     [TOOLS.CURSOR]: "bi bi-cursor-fill",
     [TOOLS.HAND]: "bi bi-hand-index",
     [TOOLS.ERASER]: "bi bi-eraser-fill",
@@ -37,10 +37,10 @@ export const TOOL_ICONS: Record<TOOLS, string> = {
     [TOOLS.PENCIL]: "bi bi-pencil-fill",
     [TOOLS.BUCKET]: "bi bi-bucket-fill",
     [TOOLS.RECT]: "bi bi-square-fill",
-    [TOOLS.ELLIPSE]: "bi bi-circle-fill",
+    // [TOOLS.ELLIPSE]: "bi bi-circle-fill",
 
     [TOOLS.RECT_SURFACE]: "bi bi-bounding-box-circles",
-    [TOOLS.CIRCLE_SURFACE]: "bi bi-circle",
+    // [TOOLS.CIRCLE_SURFACE]: "bi bi-circle",
     [TOOLS.MAGIC_PENCIL]: "bi bi-magic",
     [TOOLS.TILEPICKER]: "bi bi-eyedropper",
 }

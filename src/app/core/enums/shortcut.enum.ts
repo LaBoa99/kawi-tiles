@@ -16,7 +16,11 @@ export enum SHORTCUTS {
     RECT_SURFACE = "S",
     CIRCLE_SURFACE = "Alt+S",
     MAGIC_PENCIL = "M",
-    TILEPICKER = "T"
+    TILEPICKER = "T",
+
+    DELETE = "Delete",
+    COPY = "Ctrl+C",
+    PASTE = "Ctrl+V"
 }
 
 export const SHORTCUT_TOOLS: Record<TOOLS, string> = {

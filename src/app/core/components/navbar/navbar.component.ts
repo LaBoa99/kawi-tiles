@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjectComponent } from 'src/app/editor/modals/project/project.component';
 import { ModalService } from 'src/app/services/modal.service';
-import { AddColCommand } from '../../commands/tileproject.commad';
+import { AddColCommand, AddRowCommand } from '../../commands/tileproject.commad';
 import { TileProject } from '../../interfaces/tileproject.interface';
 import { TileProjectService } from 'src/app/services/tile-project.service';
 import { ExportComponent } from 'src/app/editor/modals/export/export.component';
@@ -37,7 +37,7 @@ export class NavbarComponent implements OnInit {
   }
 
   addRow() {
-    new AddColCommand(this._tileProjectService).execute()
+    new AddRowCommand(this._tileProjectService).execute()
   }
 
   addCol() {

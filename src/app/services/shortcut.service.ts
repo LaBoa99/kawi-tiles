@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { CommandWithService } from '../core/commands/generic.command';
-import { TileProjectService } from './tile-project.service';
-import { TilemapService } from './tilemap.service';
-import { ToolService } from './tool.service';
 import { AddColCommand, AddRowCommand, NewProjectCommand } from '../core/commands/tileproject.commad';
-import { ModalService } from './modal.service';
+import { SELECTION_BEHAVIORS } from '../core/enums/selection.enum';
 import { SHORTCUTS } from '../core/enums/shortcut.enum';
 import { TOOLS } from '../core/enums/tool.enum';
+import { ModalService } from './modal.service';
+import { SelectionService } from './selection.service';
+import { TileProjectService } from './tile-project.service';
+import { ToolService } from './tool.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,7 @@ import { TOOLS } from '../core/enums/tool.enum';
 export class ShortcutService {
 
   private shortcuts: Record<SHORTCUTS, CommandWithService<any>> = {
+    // Project
     [SHORTCUTS.NEW_PROJECT]: new NewProjectCommand(this._modalService),
     [SHORTCUTS.ADD_COL]: new AddColCommand(this._tileprojectService),
     [SHORTCUTS.ADD_ROW]: new AddRowCommand(this._tileprojectService),
@@ -29,12 +31,17 @@ export class ShortcutService {
     [SHORTCUTS.RECT_SURFACE]: this._toolService.tools[TOOLS.RECT_SURFACE],
     [SHORTCUTS.CIRCLE_SURFACE]: this._toolService.tools[TOOLS.CIRCLE_SURFACE],
     [SHORTCUTS.MAGIC_PENCIL]: this._toolService.tools[TOOLS.MAGIC_PENCIL],
-    [SHORTCUTS.TILEPICKER]: this._toolService.tools[TOOLS.TILEPICKER]
+    [SHORTCUTS.TILEPICKER]: this._toolService.tools[TOOLS.TILEPICKER],
+
+    // Selection
+    [SHORTCUTS.DELETE]: this._selectionService.selections[SELECTION_BEHAVIORS.COPY],
+    [SHORTCUTS.COPY]: this._selectionService.selections[SELECTION_BEHAVIORS.COPY],
+    [SHORTCUTS.PASTE]: this._selectionService.selections[SELECTION_BEHAVIORS.PASTE],
   }
 
   constructor(
     private _tileprojectService: TileProjectService,
-    private _tilemapService: TilemapService,
+    private _selectionService: SelectionService,
     private _toolService: ToolService,
     private _modalService: ModalService,
   ) { }
@@ -66,7 +73,6 @@ export class ShortcutService {
     result += ctrl ? 'Ctrl+' : '';
     result += alt ? 'Alt+' : '';
     result += key;
-
     return result;
   }
 

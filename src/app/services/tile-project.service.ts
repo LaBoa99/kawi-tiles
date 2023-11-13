@@ -66,6 +66,12 @@ export class TileProjectService implements OnDestroy {
     }
   }
 
+  removeLayer(index: number) {
+    if (this.tileproject.layers.length > 0) {
+      this._tilemapService.removeAtTilemap(index)
+    }
+  }
+
   getTileProject() {
     return this._tileproject.getValue()
   }

@@ -1,4 +1,4 @@
-export type Coord = [COL: number, ROW: number]
+export type Coord = [ROW: number, COL: number]
 export interface ICoord {
     row: number
     col: number

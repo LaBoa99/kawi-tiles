@@ -49,7 +49,6 @@ export class PngFileBuilder implements FileTileProjectBuilder {
         await this.canvas
         const link = document.createElement('a')
         link.href = this.file.content
-        console.log(this.file.content)
         link.download = `${filename}.${this.file.type.split("/")[1]}`
         return link
     }

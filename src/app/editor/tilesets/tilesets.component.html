@@ -12,7 +12,7 @@
                 (onDelete)="removeTiles(tileset)"
             ></app-tileset>
         </ng-container>
-        <ng-template #noTilesets> 
+        <ng-template #noTilesets>
             <small>No se ha cargado ningun <strong>tileset</strong>.</small>
         </ng-template>
     </div>
@@ -21,15 +21,31 @@
     </div>
 </div>
 <section class="w-100 h-75 overflow-auto" style="max-height: 45vh;">
-    <div class="d-felx flex-row align-items-center justify-content-start">
-        <img
-            *ngFor="let tile of tiles"
-            [src]="tile.image"
-            width="32"
-            height="32"
-            class="tile"
-            (click)="setTile(tile)"
-            (contextmenu)="setTile(tile, true)"
-        />
+    <div
+        class="d-flex flex-row align-items-center justify-content-start flex-wrap"
+    >
+        <div *ngFor="let tile of tiles">
+            <div class="position-relative" style="width: 48px; height: 48px;">
+                <img
+                    [src]="tile.image"
+                    width="48"
+                    height="48"
+                    class="tile top-0 left-0 position-absolute"
+                    (click)="setTile(tile)"
+                    (contextmenu)="setTile(tile, true)"
+                />
+                <div
+                    class="top-0 left-0 text-warning position-absolute fw-bold text-center"
+                    style="
+                        background-color: rgba(50, 50, 50, 0.5);
+                        width: 16px;
+                        height: 16px;
+                        font-size: 10px;
+                    "
+                >
+                    {{ tile.id }}
+                </div>
+            </div>
+        </div>
     </div>
 </section>

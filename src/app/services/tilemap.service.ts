@@ -36,7 +36,9 @@ export class TilemapService {
   }
 
   removeAtTilemap(i: number) {
-    return this.tilemapsController.removeAt(i);
+    const tilemap = this.tilemapsController.removeAt(i);
+    this.selectTilemap(0)
+    return tilemap
   }
 
   setTilemap(i: number, tilemap: Tilemap) {
@@ -51,10 +53,9 @@ export class TilemapService {
   // Crea un nuevo Tilemap
   createTilemap(rows: number, cols: number) {
     const newTilemap: Tilemap = { board: this.__gen_board(rows, cols), name: this.genLayerName(), id: this.genLayerId(), visible: true }
-    console.log(this.genLayerId())
     this.unshiftTilemap(newTilemap)
     this._tilemapSubject.next(newTilemap);
-    this.selectTilemap(this.tilemapsController.all().length - 1)
+    this.selectTilemap(0)
   }
 
   // Selecciona un Tilemap existente por índice
@@ -82,10 +83,13 @@ export class TilemapService {
     }
   }
 
-  setTiles(coordinates: TCoordinate[]) {
+  setTiles(coordinates: TCoordinate[], tool?: Tool) {
     let currentTilemap = this.currentTilemap
     if (!currentTilemap) return;
-    this.tool.draw(currentTilemap, coordinates)
+
+    // Esto nos funciona para saber si se requiere otra herramienta al a seleccionada como por ejemplo las de seleccion
+    const toolToDraw = tool == undefined ? this.tool : tool
+    toolToDraw.draw(currentTilemap, coordinates)
     this._tilemapSubject.next(currentTilemap);
   }
 

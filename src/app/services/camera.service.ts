@@ -7,7 +7,7 @@ import { BehaviorSubject } from 'rxjs';
 export class CameraService {
 
   private _scale$ = new BehaviorSubject<number>(1)
-  private scale$ = this._scale$.asObservable()
+  public scale$ = this._scale$.asObservable()
 
   constructor() { }
 
@@ -18,5 +18,6 @@ export class CameraService {
   getScale(): number {
     return this._scale$.getValue()
   }
+
 
 }

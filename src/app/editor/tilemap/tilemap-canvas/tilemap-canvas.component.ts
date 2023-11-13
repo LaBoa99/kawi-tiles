@@ -106,7 +106,6 @@ export class TilemapCanvasComponent implements OnInit, OnDestroy, AfterViewInit 
     if (this.layerType == LayerType.SELECT) {
       this._selectionService.selectionBoard$.subscribe(res => {
         const [tool, coordinates] = res
-        if (!tool || this._toolService.getTool() === TOOLS.TILEPICKER) return;
         this.drawSelection(coordinates)
         this._lastSelectedCells = CoordsUtils.tcoordinateToCoord(...coordinates)
       })
@@ -265,6 +264,7 @@ export class TilemapCanvasComponent implements OnInit, OnDestroy, AfterViewInit 
       this.context.fillStyle = this.HOVER_FILL_COLOR;
       this.context.fillRect(x, y, this.tile_w, this.tile_h)
       this._lastTouchedCell = [row, col]
+      this._selectionService.setMouseCoords(row, col)
     }
   }
 
