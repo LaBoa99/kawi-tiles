@@ -19,6 +19,7 @@ import { ProjectComponent } from './modals/project/project.component';
 import { SelectionTilemapComponent } from './tilemap/selection-tilemap/selection-tilemap.component';
 import { TilemapCanvasComponent } from './tilemap/tilemap-canvas/tilemap-canvas.component';
 import { ExportComponent } from './modals/export/export.component';
+import { HelpComponent } from './modals/help/help.component';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { ExportComponent } from './modals/export/export.component';
     ProjectComponent,
     SelectionTilemapComponent,
     TilemapCanvasComponent,
-    ExportComponent
+    ExportComponent,
+    HelpComponent
   ],
   imports: [
     CommonModule,

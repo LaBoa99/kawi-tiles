@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { CommandWithService } from '../core/commands/generic.command';
-import { AddColCommand, AddRowCommand, NewProjectCommand } from '../core/commands/tileproject.commad';
+import { AddColCommand, AddRowCommand, NewProjectCommand, SaveProjectCommand } from '../core/commands/tileproject.commad';
 import { SELECTION_BEHAVIORS } from '../core/enums/selection.enum';
-import { SHORTCUTS } from '../core/enums/shortcut.enum';
+import { SHORTCUTS, SHORTCUT_TOOLS } from '../core/enums/shortcut.enum';
 import { TOOLS } from '../core/enums/tool.enum';
 import { ModalService } from './modal.service';
 import { SelectionService } from './selection.service';
@@ -17,6 +17,7 @@ export class ShortcutService {
   private shortcuts: Record<SHORTCUTS, CommandWithService<any>> = {
     // Project
     [SHORTCUTS.NEW_PROJECT]: new NewProjectCommand(this._modalService),
+    [SHORTCUTS.SAVE_AS]: new SaveProjectCommand(this._modalService),
     [SHORTCUTS.ADD_COL]: new AddColCommand(this._tileprojectService),
     [SHORTCUTS.ADD_ROW]: new AddRowCommand(this._tileprojectService),
 
@@ -37,6 +38,7 @@ export class ShortcutService {
     [SHORTCUTS.DELETE]: this._selectionService.selections[SELECTION_BEHAVIORS.COPY],
     [SHORTCUTS.COPY]: this._selectionService.selections[SELECTION_BEHAVIORS.COPY],
     [SHORTCUTS.PASTE]: this._selectionService.selections[SELECTION_BEHAVIORS.PASTE],
+    [SHORTCUTS.CLEAR]: this._selectionService.selections[SELECTION_BEHAVIORS.CLEAR],
   }
 
   constructor(
@@ -68,6 +70,7 @@ export class ShortcutService {
     if (!ctrl && !alt) {
       return key;
     }
+    console.log(event)
 
     let result = '';
     result += ctrl ? 'Ctrl+' : '';

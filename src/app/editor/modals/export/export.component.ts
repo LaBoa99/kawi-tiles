@@ -18,11 +18,12 @@ export class ExportComponent implements OnInit {
   public ExportFileTypes = ExportFileTypes
 
   constructor(
+    private _fb: FormBuilder,
+
     private _tileProjectService: TileProjectService,
     private _fileService: FileService,
 
     public activeModal: NgbActiveModal,
-    private _fb: FormBuilder,
   ) {
 
   }
@@ -38,7 +39,7 @@ export class ExportComponent implements OnInit {
 
   submit() {
     const metadata = this.form.value
-    this._fileService.downloadFile(this.tileproject, metadata['title'], metadata['filetype'])
+    this._fileService.downloadTileProjectFile(this.tileproject, metadata['title'], metadata['filetype'])
   }
 
   closeModal() {

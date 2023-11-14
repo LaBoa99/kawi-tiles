@@ -24,7 +24,7 @@
                         <div class="d-flex flex-row justify-content-start align-items-center gap-3">
                             <div ngbDropdown>
                                 <a class="nav-link active" style="cursor: pointer;"  ngbDropdownToggle>Archivo</a>
-                                <div ngbDropdownMenu>
+                                <div ngbDropdownMenu style="width: 250px !important;">
                                     <button ngbDropdownItem (click)="openProjectModal()">
                                         <div class="d-flex justify-content-between align-items-center">
                                             <small>Crear proyecto</small>
@@ -36,31 +36,39 @@
                                             <small>Cargar Proyecto</small>
                                         </div>
                                     </button>
+                                    <div class="dropdown-divider"></div>
                                     <button ngbDropdownItem (click)="openExportModal()">
                                         <div class="d-flex justify-content-between align-items-center">
-                                            <small>Exportar como</small>
+                                            <small>Exportar como...</small>
+                                            <small>(Alt + G)</small>
                                         </div>
                                     </button>
                                 </div>
                             </div>
-                            <div ngbDropdown>
+                            <div ngbDropdown >
                                 <a class="nav-link active" style="cursor: pointer;"  ngbDropdownToggle>Proyecto</a>
-                                <div ngbDropdownMenu>
+                                <div ngbDropdownMenu style="width: 250px !important;">
                                     <button ngbDropdownItem (click)="addRow()">
                                         <div class="d-flex justify-content-between align-items-center">
-                                            <small><i class="bi bi-plus-lg"></i> Fila</small>
+                                            <small class="fs-6"><i class="bi bi-plus-lg me-2"></i> Fila</small>
                                             <small>(Alt + R)</small>
                                         </div>
                                     </button>
                                     <button ngbDropdownItem (click)="addCol()">
                                         <div class="d-flex justify-content-between align-items-center">
-                                            <small><i class="bi bi-plus-lg"></i> Columna</small>
+                                            <small class="fs-6"><i class="bi bi-plus-lg me-1"></i> Columna</small>
                                             <small>(Alt + C)</small>
+                                        </div>
+                                    </button>
+                                    <button ngbDropdownItem (click)="clearSelection()">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <small class="fs-6"><i class="bi bi-dash-square-dotted me-2"></i>Deseleccionar</small>
+                                            <small>(Alt + U)</small>
                                         </div>
                                     </button>
                                 </div>
                             </div>
-                            <a class="nav-link active" aria-current="page">Ayuda</a>
+                            <a class="nav-link active" aria-current="page" (click)="help()">Ayuda</a>
                         </div>
                     </div>
                 </li>

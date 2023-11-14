@@ -199,10 +199,15 @@ export class TilemapCanvasComponent implements OnInit, OnDestroy, AfterViewInit 
 
 
   private drawTilemap(): void {
-    if (this.layerType == LayerType.GRID) {
-      this.drawGrid()
-    } else {
-      this.drawLayer(this.layer)
+    switch (this.layerType) {
+      case LayerType.GRID:
+        this.drawGrid();
+        break;
+      case LayerType.SELECT:
+        this._lastSelectedCells = CoordsUtils.tcoordinateToCoord(...this._selectionService.getSelection()[1])
+        this.drawSelection(CoordsUtils.coordToTCoordinate(...this._lastSelectedCells))
+        break;
+      default: this.drawLayer(this.layer)
     }
   }
 
@@ -244,7 +249,7 @@ export class TilemapCanvasComponent implements OnInit, OnDestroy, AfterViewInit 
     for (let row = 0; row < this.rows; row++) {
       for (let col = 0; col < this.cols; col++) {
         const tile = layer.board[row][col]
-        if (!tile.image) continue;
+        if (!tile?.image) continue;
         this.drawTile(tile)
       }
     }

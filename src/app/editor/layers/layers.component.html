@@ -14,6 +14,7 @@
             *ngFor="let layer of layers$ | async; index as i"
             class="flex-fill"
             [layer]="layer"
+            [index]="i"
             (click)="onClickLayer(i)"
         ></app-layer>
     </div>

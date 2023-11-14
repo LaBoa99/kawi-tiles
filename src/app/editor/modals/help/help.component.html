@@ -1,0 +1,142 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <h6 class="modal-title">Ayuda</h6>
+        <button
+            type="button"
+            class="btn-close"
+            data-dismiss="modal"
+            (click)="closeModal()"
+        ></button>
+    </div>
+    <div class="modal-body">
+        <section>
+            <div class="d-flex justify-content-between align-items-center">
+                <h5>Atajos</h5>
+                <i  class="bi bi-download btn fs-6" (click)="downloadShortcuts()"></i>
+            </div>
+
+            <hr>
+            <h6>Proyecto</h6>
+            <div class="ms-3 p-1 table-responsive">
+                <table class="table table-sm table-75-25">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Nuevo proyecto</td>
+                            <td><kbd>Alt + N</kbd></td>
+                        </tr>
+                        <tr>
+                            <td>Guardar como</td>
+                            <td><kbd>Alt + G</kbd></td>
+                        </tr>
+                        <tr>
+                            <td>Añadir Columna</td>
+                            <td><kbd>Alt + C</kbd></td>
+                        </tr>
+                        <tr>
+                            <td>Añadir Fila</td>
+                            <td><kbd>Alt + R</kbd></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <section>
+            <h6>Herramientas</h6>
+            <div class="ms-3 p-1 table-responsive">
+                <table class="table table-sm table-75-25">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Lápiz</td>
+                            <td><kbd>P</kbd></td>
+                        </tr>
+                        <tr>
+                            <td>Cubo</td>
+                            <td><kbd>B</kbd></td>
+                        </tr>
+                        <tr>
+                            <td>Borrador</td>
+                            <td><kbd>E</kbd></td>
+                        </tr>
+                        <tr>
+                            <td>Rectángulo</td>
+                            <td><kbd>R</kbd></td>
+                        </tr>
+                        <tr>
+                            <td>Elipse</td>
+                            <td><kbd>O</kbd></td>
+                        </tr>
+                        <tr>
+                            <td>Mano</td>
+                            <td><kbd>H</kbd></td>
+                        </tr>
+                        <tr>
+                            <td>Cursor</td>
+                            <td><kbd>C</kbd></td>
+                        </tr>
+                        <tr>
+                            <td>Superficie Rectangular</td>
+                            <td><kbd>S</kbd></td>
+                        </tr>
+                        <tr>
+                            <td>Superficie Circular</td>
+                            <td><kbd>Alt + S</kbd></td>
+                        </tr>
+                        <tr>
+                            <td>Lápiz Mágico</td>
+                            <td><kbd>M</kbd></td>
+                        </tr>
+                        <tr>
+                            <td>Selector de Mosaicos</td>
+                            <td><kbd>T</kbd></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <section>
+            <h6>Selección</h6>
+            <div class="ms-3 p-1 table-responsive">
+                <table class="table table-sm table-75-25">
+                    <thead>
+                        <tr class="w-75">
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Eliminar</td>
+                            <td><kbd>Delete</kbd></td>
+                        </tr>
+                        <tr>
+                            <td>Copiar</td>
+                            <td><kbd>Ctrl + C</kbd></td>
+                        </tr>
+                        <tr>
+                            <td>Pegar</td>
+                            <td><kbd>Ctrl + V</kbd></td>
+                        </tr>
+                        <tr>
+                            <td>Borrar</td>
+                            <td><kbd>Alt + U</kbd></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+    <div class="modal-footer">
+    </div>
+</div>

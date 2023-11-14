@@ -1,0 +1,9 @@
+.table-75-25 th:first-child,
+.table-75-25 td:first-child {
+    width: 75%;
+}
+
+.table-75-25 th:nth-child(2),
+.table-75-25 td:nth-child(2) {
+    width: 25%;
+}

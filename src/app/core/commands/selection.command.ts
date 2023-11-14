@@ -51,6 +51,12 @@ class SelectionCommand extends CommandWithService<SelectionService>  {
     override execute(): void { }
 }
 
+export class ClearSelection extends SelectionCommand {
+    override execute(): void {
+        this.service.emitSelection(undefined, [])
+    }
+}
+
 export class CopySelection extends SelectionCommand {
     override execute(): void {
         this.init()

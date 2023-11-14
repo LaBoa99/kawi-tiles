@@ -1,19 +1,8 @@
-<ng-container *ngIf="dummyTilemap; else noTilemap">
+<ng-container *ngIf="dummyTilemap && layers.length > 0; else noTilemap">
     <app-tilemap-canvas
         [layer]="dummyTilemap"
         [layerType]="layerType.GRID"
     ></app-tilemap-canvas>
-    <div style="position: relative;">
-        <ng-container
-            *ngFor="let tilemap of layers; let i = index; trackBy: trackByTilemap"
-        >
-            <app-tilemap-canvas
-                [layer]="tilemap"
-                [style.z-index.px]="-i"
-                [hidden]="!tilemap.visible"
-            ></app-tilemap-canvas>
-        </ng-container>
-    </div>
     <app-tilemap-canvas
     *ngIf="dummyTilemap; else noTilemap"
     [layer]="dummyTilemap"

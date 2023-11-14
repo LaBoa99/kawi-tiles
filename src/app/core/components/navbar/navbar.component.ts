@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjectComponent } from 'src/app/editor/modals/project/project.component';
 import { ModalService } from 'src/app/services/modal.service';
-import { AddColCommand, AddRowCommand } from '../../commands/tileproject.commad';
+import { AddColCommand, AddRowCommand, NewProjectCommand, SaveProjectCommand } from '../../commands/tileproject.commad';
 import { TileProject } from '../../interfaces/tileproject.interface';
 import { TileProjectService } from 'src/app/services/tile-project.service';
 import { ExportComponent } from 'src/app/editor/modals/export/export.component';
+import { ClearSelection } from '../../commands/selection.command';
+import { SelectionService } from 'src/app/services/selection.service';
+import { HelpComponent } from 'src/app/editor/modals/help/help.component';
 
 @Component({
   selector: 'app-navbar',
@@ -17,7 +20,8 @@ export class NavbarComponent implements OnInit {
 
   constructor(
     private _modalService: ModalService,
-    private _tileProjectService: TileProjectService
+    private _tileProjectService: TileProjectService,
+    private _selectionService: SelectionService
   ) {
 
   }
@@ -29,11 +33,11 @@ export class NavbarComponent implements OnInit {
   }
 
   openProjectModal() {
-    this._modalService.openModal(ProjectComponent)
+    new NewProjectCommand(this._modalService).execute()
   }
 
   openExportModal() {
-    this._modalService.openModal(ExportComponent)
+    new SaveProjectCommand(this._modalService).execute()
   }
 
   addRow() {
@@ -43,4 +47,13 @@ export class NavbarComponent implements OnInit {
   addCol() {
     new AddColCommand(this._tileProjectService).execute()
   }
+
+  clearSelection() {
+    new ClearSelection(this._selectionService).execute()
+  }
+
+  help() {
+    this._modalService.openModal(HelpComponent)
+  }
+
 }

@@ -2,8 +2,10 @@ import { TOOLS } from "./tool.enum";
 
 export enum SHORTCUTS {
     NEW_PROJECT = "Alt+N",
+    SAVE_AS = "Alt+G",
     ADD_COL = "Alt+C",
     ADD_ROW = "Alt+R",
+
 
     // TOOLS
     PENCIL = "P",
@@ -18,9 +20,11 @@ export enum SHORTCUTS {
     MAGIC_PENCIL = "M",
     TILEPICKER = "T",
 
+    // Selection
     DELETE = "Delete",
     COPY = "Ctrl+C",
-    PASTE = "Ctrl+V"
+    PASTE = "Ctrl+V",
+    CLEAR = "Alt+U",
 }
 
 export const SHORTCUT_TOOLS: Record<TOOLS, string> = {

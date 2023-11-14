@@ -35,6 +35,18 @@ export class TilemapService {
     this.tilemapsController.unshift(tilemap);
   }
 
+  insertAt(index: number, tilemap: Tilemap) {
+    if (index >= 0) {
+      this.tilemapsController.insertAt(index, tilemap)
+      this.selectTilemap(index)
+    }
+  }
+
+  swap(from: number, to: number) {
+    const ok = this.tilemapsController.swap(from, to)
+    if (ok) this.selectTilemap(to)
+  }
+
   removeAtTilemap(i: number) {
     const tilemap = this.tilemapsController.removeAt(i);
     this.selectTilemap(0)
@@ -43,6 +55,7 @@ export class TilemapService {
 
   setTilemap(i: number, tilemap: Tilemap) {
     const result = this.tilemapsController.set(i, tilemap);
+    this._tilemapSubject.next(result);
     return result
   }
 

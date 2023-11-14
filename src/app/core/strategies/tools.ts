@@ -135,6 +135,12 @@ export class BucketTool extends Tool {
 }
 
 // Selection tools 
+export class CursorSelectionTool extends CursorTool implements SelectionTool {
+    emit(service: SelectionProvider, coordinates: TCoordinate[]): void {
+        service.emitSelection(this, coordinates)
+    }
+}
+
 export class RectSurfaceTool extends RectTool implements SelectionTool {
     constructor() {
         super()

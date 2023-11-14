@@ -12,6 +12,12 @@
     }
 }
 
+.layer-title {
+    text-wrap: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .active {
     background: rgb(221, 255, 255);
 }

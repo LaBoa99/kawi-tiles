@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { CommandWithService } from '../core/commands/generic.command';
-import { CopySelection, PasteSelection, RemoveSelection } from '../core/commands/selection.command';
+import { CopySelection, PasteSelection, RemoveSelection, ClearSelection } from '../core/commands/selection.command';
 import { SELECTION_BEHAVIORS } from '../core/enums/selection.enum';
 import { SelectionProvider } from '../core/interfaces/selection.interface';
 import { TCoordinate, Tilemap } from '../core/interfaces/tilemap.interface';
@@ -26,7 +26,8 @@ export class SelectionService implements SelectionProvider {
   public selections: Record<SELECTION_BEHAVIORS, CommandWithService<SelectionService>> = {
     [SELECTION_BEHAVIORS.COPY]: new CopySelection(this),
     [SELECTION_BEHAVIORS.PASTE]: new PasteSelection(this),
-    [SELECTION_BEHAVIORS.DELETE]: new RemoveSelection(this)
+    [SELECTION_BEHAVIORS.DELETE]: new RemoveSelection(this),
+    [SELECTION_BEHAVIORS.CLEAR]: new ClearSelection(this),
   }
 
   constructor(
@@ -42,7 +43,7 @@ export class SelectionService implements SelectionProvider {
     this._tilemapService.setTiles(coordinates, isPencil ? new PencilTool() : new EraserTool())
   }
 
-  emitSelection(tool: SelectionTool, coordinates: TCoordinate[]): void {
+  emitSelection(tool: SelectionTool | undefined, coordinates: TCoordinate[]): void {
     this._selectionBoard.next([tool, coordinates])
   }
 

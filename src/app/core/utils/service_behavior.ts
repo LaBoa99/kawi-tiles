@@ -1,4 +1,5 @@
 import { BehaviorSubject, Observable } from 'rxjs';
+import { Tilemap } from '../interfaces/tilemap.interface';
 
 export class BehaviorListController<T> {
     private _list$ !: BehaviorSubject<T[]>;
@@ -55,6 +56,27 @@ export class BehaviorListController<T> {
         const valuesRemoved = values.splice(index, 1)[0];
         this._list$.next(values);
         return valuesRemoved;
+    }
+
+    insertAt(index: number, value: T) {
+        const values = this.values;
+        values.splice(index, 0, value)
+        this._list$.next(values)
+    }
+
+    swap(from: number, to: number): boolean {
+        const values = this.values
+        if (from >= values.length || from < 0 || to >= values.length || to < 0 || from == to) {
+            return false;
+        }
+        const current = values[from]
+        const itemSwap = values[to]
+
+        values[from] = itemSwap
+        values[to] = current
+
+        this._list$.next(values)
+        return true
     }
 
     // Obtiene una copia del arreglo actual.

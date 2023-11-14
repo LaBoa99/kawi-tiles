@@ -40,6 +40,7 @@ export class TilemapComponent implements OnInit, OnDestroy {
       this.dummyTilemap = this._tilemapService.genDummyTilemap(rows, cols)
     })
 
+
     this._tilemapSubscription = this._tilemapService.tilemap$.subscribe(tilemap => {
       if (tilemap) {
         const index = tilemap.id

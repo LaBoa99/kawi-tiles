@@ -2,6 +2,7 @@ import { ProjectComponent } from "src/app/editor/modals/project/project.componen
 import { ModalService } from "src/app/services/modal.service";
 import { TileProjectService } from "src/app/services/tile-project.service";
 import { CommandWithService } from "./generic.command";
+import { ExportComponent } from "src/app/editor/modals/export/export.component";
 
 export class AddRowCommand extends CommandWithService<TileProjectService> {
     override execute(): void {
@@ -38,5 +39,11 @@ export class AddColCommand extends CommandWithService<TileProjectService> {
 export class NewProjectCommand extends CommandWithService<ModalService> {
     override execute(): void {
         this.service.openModal(ProjectComponent)
+    }
+}
+
+export class SaveProjectCommand extends CommandWithService<ModalService> {
+    override execute(): void {
+        this.service.openModal(ExportComponent)
     }
 }
