@@ -21,7 +21,7 @@ export enum SHORTCUTS {
     TILEPICKER = "T",
 
     // Selection
-    DELETE = "Delete",
+    DELETE = "X",
     COPY = "Ctrl+C",
     PASTE = "Ctrl+V",
     CLEAR = "Alt+U",

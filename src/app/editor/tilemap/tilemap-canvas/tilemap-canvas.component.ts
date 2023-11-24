@@ -209,6 +209,7 @@ export class TilemapCanvasComponent implements OnInit, OnDestroy, AfterViewInit 
         break;
       default: this.drawLayer(this.layer)
     }
+    //this.drawLayer(this.layer)
   }
 
   private drawGrid(): void {

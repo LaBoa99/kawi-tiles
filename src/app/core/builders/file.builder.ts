@@ -63,8 +63,8 @@ export class PngFileBuilder implements FileTileProjectBuilder {
 
             canvas.width = data.cols * tileWidth
             canvas.height = data.rows * tileHeight
-
-            for (const layer of data.layers) {
+            const layers = data.layers.reverse()
+            for (const layer of layers) {
                 if (!layer.visible) continue;
                 for (const row of layer.board) {
                     for (const tile of row) {

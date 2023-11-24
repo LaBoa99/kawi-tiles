@@ -3,6 +3,15 @@
         [layer]="dummyTilemap"
         [layerType]="layerType.GRID"
     ></app-tilemap-canvas>
+<ng-container         *ngFor="let layer of layers">
+    <app-tilemap-canvas
+
+    *ngIf="layer.visible"
+    [layerType]="layerType.SURFACE"
+    [layer]="layer"
+></app-tilemap-canvas>
+</ng-container>
+
     <app-tilemap-canvas
     *ngIf="dummyTilemap; else noTilemap"
     [layer]="dummyTilemap"
